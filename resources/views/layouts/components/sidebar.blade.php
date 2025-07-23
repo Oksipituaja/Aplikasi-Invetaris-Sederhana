@@ -2,18 +2,18 @@
     $menus = [
         (object) [
             'title' => 'Dashboard',
-            'path' => 'products',
-            'icon' => 'fas fa-th',
+            'path' => 'dashboard',
+            'icon' => 'fas fa-home',
         ],
         (object) [
-            'title' => 'Produk',
+            'title' => 'Barang',
             'path' => route('admin.products.index'),
-            'icon' => 'fas fa-th',
+            'icon' => 'fas fa-cube',
         ],
         (object) [
             'title' => 'Kategori',
             'path' => route('admin.categories.index'),
-            'icon' => 'fas fa-th',
+            'icon' => 'fas fa-tags',
         ],
     ];
 @endphp

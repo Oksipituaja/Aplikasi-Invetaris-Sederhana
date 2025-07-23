@@ -55,51 +55,54 @@
                             }, 5000)
                         </script>
                     @endif
-
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Barang</th>
-                                <th>Deskripsi</th>
-                                <th>NUP/Ruangan</th>
-                                <th>Tanggal Mulai</th>
-                                <th>Tanggal Selesai</th>
-                                <th>Stok</th>
-                                <th>Kategori</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($products as $product)
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $product->nama_barang }}</td>
-                                    <td>{{ $product->description }}</td>
-                                    <td>{{ $product->nup_ruangan ?? '-' }}</td>
-                                    <td>{{ $product->tanggal_mulai }}</td>
-                                    <td>{{ $product->tanggal_selesai ?? '-' }}</td>
-                                    <td>{{ $product->stok_barang ?? '-' }}</td>
-                                    <td>{{ $product->category->nama_barang ?? '-' }}</td>
-                                    <td>
-                                        <a href="{{ route('admin.products.edit', $product->id) }}"
-                                            class="btn btn-sm btn-warning" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-
-                                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" title="Hapus"
-                                                onclick="return confirm('Yakin ingin menghapus?')">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                                    <th>No</th>
+                                    <th>Nama Barang</th>
+                                    <th>Deskripsi</th>
+                                    <th>NUP/Ruangan</th>
+                                    <th>Tanggal Mulai</th>
+                                    <th>Tanggal Selesai</th>
+                                    <th>Stok</th>
+                                    <th>Aksi</th>
+                                    <th>Kategori</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($products as $product)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $product->nama_barang }}</td>
+                                        <td>{{ $product->description }}</td>
+                                        <td>{{ $product->nup_ruangan ?? '-' }}</td>
+                                        <td>{{ $product->tanggal_mulai }}</td>
+                                        <td>{{ $product->tanggal_selesai ?? '-' }}</td>
+                                        <td>{{ $product->stok_barang ?? '-' }}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="{{ route('admin.products.edit', $product->id) }}"
+                                                    class="btn btn-sm btn-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+
+                                                <form action="{{ route('admin.products.destroy', $product->id) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" title="Hapus"
+                                                        onclick="return confirm('Yakin ingin menghapus?')">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td>{{ $product->category->nama_barang ?? '-' }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -50,7 +50,7 @@
     <div class="float-right d-none d-sm-block">
       <b>Version</b> Tester
     </div>
-    <strong>Copyright &copy; 2025 <a href="#">Adminnn</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2025 <a href="#">Admin Cihuy</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->
@@ -67,7 +67,5 @@
 <script src="{{ asset('templates/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('templates/dist/js/adminlte.min.js')}}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('templates/dist/js/demo.js')}}"></script>
 </body>
 </html>
