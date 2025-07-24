@@ -3,6 +3,11 @@
 @section('header')
     <div class="row mb-2 align-items-center">
         <div class="col">
+            <div class="alert alert-primary shadow-sm" id="greeting-alert">
+                {{ $greeting }} <strong>{{ $user->name }}</strong>, selamat datang kembali di dashboard inventaris! Kamu login
+                sebagai <span class="badge bg-info text-white">{{ $user->role }}</span>.
+            </div>
+
             <h1 class="mb-0">Dashboard</h1>
         </div>
         <div class="col text-right">
@@ -140,4 +145,18 @@
             });
         });
     </script>
+    <script>
+    window.addEventListener('load', function () {
+        const greetingAlert = document.getElementById('greeting-alert');
+        if (greetingAlert) {
+            setTimeout(() => {
+                greetingAlert.classList.add('fade');
+                greetingAlert.classList.remove('show');
+                greetingAlert.style.transition = 'opacity 0.5s ease';
+                greetingAlert.style.opacity = '0';
+                setTimeout(() => greetingAlert.remove(), 500); // hapus dari DOM setelah fade
+            }, 5000); // 5 detik
+        }
+    });
+</script>
 @endsection

@@ -5,15 +5,19 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class CekAdmin
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        /** @var User|null $user */
+        $user = Auth::user();
+
+        if ($user && $user->role === 'admin') {
             return $next($request);
         }
 
-        abort(403, 'Akses ditolak. Anda bukan admin.');
+        abort(403, 'Akses hanya untuk admin.');
     }
 }

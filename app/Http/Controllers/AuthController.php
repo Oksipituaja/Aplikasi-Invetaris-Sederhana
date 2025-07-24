@@ -26,9 +26,7 @@ class AuthController extends Controller
             return redirect()->intended(route('admin.dashboard'));
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->onlyInput('email');
+        return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
     }
 
     public function showRegisterForm()
@@ -39,16 +37,16 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name'                  => ['required', 'string', 'max:50'],
-            'email'                 => ['required', 'email', 'unique:users,email'],
-            'password'              => ['required', 'confirmed', 'min:6'],
-            'password_confirmation' => ['required']
+            'name'     => ['required', 'string', 'max:50'],
+            'email'    => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'confirmed', 'min:6'],
         ]);
 
         $user = User::create([
             'name'     => $validated['name'],
             'email'    => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'role'     => 'user', // default role
         ]);
 
         Auth::login($user);
@@ -58,10 +56,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect()->route('login');
     }
 }
