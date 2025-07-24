@@ -98,12 +98,12 @@
 
         {{-- Bar Chart --}}
         <div class="col-12 mb-4">
-            <div class="card shadow-sm h-100">
+            <div class="card shadow-sm h-60">
                 <div class="card-header ">
                     <h3 class="card-title">Total Stok per Kategori</h3>
                 </div>
                 <div class="card-body">
-                    <canvas id="kategoriBarChart" height="50" width="100%"></canvas>
+                    <canvas id="kategoriBarChart" height="40" width="100%"></canvas>
                 </div>
             </div>
         </div>

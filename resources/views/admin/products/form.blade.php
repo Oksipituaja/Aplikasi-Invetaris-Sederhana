@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Deskripsi</label>
+                            <label>Keterangan</label>
                             <textarea name="description" class="form-control">{{ old('description', $product->description ?? '') }}</textarea>
                         </div>
 
@@ -60,7 +60,7 @@
                             <div class="form-group">
                                 <label>Kategori</label>
                                 <select name="category_id" class="form-control">
-                                    <option value="">-- Pilih Kategori --</option>
+                                    <option value="">-- Pilih Kategori Kerusakan --</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
                                             {{ old('category_id', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>

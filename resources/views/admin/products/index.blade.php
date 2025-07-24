@@ -25,7 +25,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <select name="category_id" class="form-control" onchange="this.form.submit()">
-                                    <option value="">-- Semua Kategori --</option>
+                                    <option value="">-- Jenis Kerusakan --</option>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}"
                                             {{ request('category_id') == $cat->id ? 'selected' : '' }}>
@@ -61,7 +61,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Barang</th>
-                                    <th>Deskripsi</th>
+                                    <th>Keterangan</th>
                                     <th>NUP/Ruangan</th>
                                     <th>Tanggal Mulai</th>
                                     <th>Tanggal Selesai</th>
@@ -74,7 +74,7 @@
                                 @foreach ($products as $product)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $product->nama_barang }}</td>
+                                        <td>{{ $product->nama_barang }}</td> {{-- sebagai keterangan --}}
                                         <td>{{ $product->description }}</td>
                                         <td>{{ $product->nup_ruangan ?? '-' }}</td>
                                         <td>{{ $product->tanggal_mulai }}</td>
@@ -97,7 +97,7 @@
                                                 </form>
                                             </div>
                                         </td>
-                                        <td>{{ $product->category->nama_barang ?? '-' }}</td>
+                                        <td>{{ $product->category->nama_barang ?? '-' }}</td> {{-- sebagai kerusakan --}}
                                     </tr>
                                 @endforeach
                             </tbody>

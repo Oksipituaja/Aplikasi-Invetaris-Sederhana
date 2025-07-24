@@ -3,9 +3,24 @@
 @section('content')
     <h3 class="mb-3">Manajemen Pengguna</h3>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+                        @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" id="success-alert">
+                            {{ session('success') }}
+                            <button class="close" data-dismiss="alert">&times;</button>
+                        </div>
+
+                        <script>
+                            setTimeout(function() {
+                                let alertBox = document.getElementById('success-alert');
+                                if (alertBox) {
+                                    alertBox.classList.remove('show');
+                                    alertBox.classList.add('fade');
+                                    alertBox.style.opacity = '0';
+                                    setTimeout(() => alertBox.remove(), 500);
+                                }
+                            }, 5000)
+                        </script>
+                    @endif
 
     <!-- Tombol Tambah -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalTambahUser">

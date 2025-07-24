@@ -29,6 +29,12 @@
             'icon' => 'fas fa-users',
             'roles' => ['admin'],
         ],
+        (object) [
+            'title' => 'Home Pengguna',
+            'path' => route('user.home'),
+            'icon' => 'fas fa-user',
+            'roles' => ['user'],
+        ],
     ])->filter(fn($menu) => in_array($role, $menu->roles));
 @endphp
 
@@ -36,27 +42,29 @@
     <a href="#" class="brand-link">
         <img src="{{ asset('templates/dist/img/AdminLTELogo.png') }}" alt="Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Admin Waspadalah</span>
+        <span class="brand-text font-weight-light">Admin Tester</span>
     </a>
 
     <div class="sidebar">
         @if ($user)
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
-            <div class="image">
-                <img src="{{ asset('templates/dist/img/avatar.png') }}" class="img-circle elevation-2" alt="User">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+                <div class="image">
+                    <img src="{{ asset('templates/dist/img/avatar.png') }}" class="img-circle elevation-2"
+                        alt="User">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">
+                        {{ $user->name }}
+                        <span class="badge bg-info text-white ms-1">{{ ucfirst($role) }}</span>
+                    </a>
+                </div>
             </div>
-            <div class="info">
-                <a href="#" class="d-block">
-                    {{ $user->name }}
-                    <span class="badge bg-info text-white ms-1">{{ ucfirst($role) }}</span>
-                </a>
-            </div>
-        </div>
         @endif
 
         <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Cari menu..." aria-label="Search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Cari menu..."
+                    aria-label="Search">
                 <div class="input-group-append">
                     <button class="btn btn-sidebar"><i class="fas fa-search fa-fw"></i></button>
                 </div>
