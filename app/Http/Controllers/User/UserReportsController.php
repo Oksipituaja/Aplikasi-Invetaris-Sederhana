@@ -5,12 +5,12 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Report;
+use App\Models\Reports;
 use App\Models\Inventaris;
-
-class UserReportController extends Controller
+use Illuminate\Contracts\View\View;
+class UserReportsController extends Controller
 {
-    public function create()
+    public function create(): View
     {
         // Ambil daftar nama barang unik untuk input bebas + filter
         $barangList = Inventaris::select('nama_barang')->distinct()->get();
@@ -26,7 +26,7 @@ class UserReportController extends Controller
             'catatan'     => 'nullable|string|max:255'
         ]);
 
-        Report::create([
+        Reports::create([
             'user_id'     => Auth::id(),
             'nama_barang' => $request->nama_barang,
             'kondisi'     => $request->kondisi,

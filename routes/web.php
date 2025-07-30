@@ -1,31 +1,38 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
-// 🔒 Admin
+//  Autentikasi (Guest only)
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('register', [AuthController::class, 'register']);
+});
+
+//  Logout untuk semua yang login
+Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+//  Redirect root berdasarkan role login
+Route::get('/', function () {
+    if (!Auth::check()) return redirect()->route('login');
+
+    return match (Auth::user()->role) {
+        'admin' => redirect()->route('admin.dashboard'),
+        'user' => redirect()->route('user.home'),
+        default => abort(403, 'Role tidak dikenali'),
+    };
+});
+
+//  ADMIN AREA
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\UserController;
 
-// 👤 User
-use App\Http\Controllers\User\UserHomeController;
-use App\Http\Controllers\User\UserProfileController;
-use App\Http\Controllers\User\UserBarangController;
-use App\Http\Controllers\User\UserReportController;
-
-// 🔐 Autentikasi
-Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('login', [AuthController::class, 'login']);
-Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('register', [AuthController::class, 'register']);
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-
-// 🏠 Redirect root ke dashboard /home berdasarkan role
-Route::redirect('/', '/admin/dashboard'); // Bisa diganti sesuai sistem redirect dinamis
-
-// 🔐 Area Admin (role: admin only)
 Route::prefix('admin')->middleware(['auth', 'cekadmin'])->name('admin.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', ProductController::class);
@@ -33,11 +40,23 @@ Route::prefix('admin')->middleware(['auth', 'cekadmin'])->name('admin.')->group(
     Route::resource('users', UserController::class)->except(['show']);
 });
 
-// 👤 Area Pengguna (role: user)
-Route::prefix('user')->middleware(['auth'])->name('user.')->group(function () {
+//  USER AREA
+use App\Http\Controllers\User\UserHomeController;
+use App\Http\Controllers\UserProductController;
+use App\Http\Controllers\User\UserBarangController;
+use App\Http\Controllers\User\UserReportsController;
+
+Route::prefix('user')->middleware(['auth', 'cekuser'])->name('user.')->group(function () {
     Route::get('home', [UserHomeController::class, 'index'])->name('home');
-    Route::get('profile', [UserProfileController::class, 'index'])->name('profile');
+    Route::resource('products', UserProductController::class);
     Route::get('barang', [UserBarangController::class, 'index'])->name('barang');
-    Route::get('cek-alat', [UserReportController::class, 'create'])->name('report.create');
-    Route::post('cek-alat', [UserReportController::class, 'store'])->name('report.store');
+    Route::get('cek-alat', [UserReportsController::class, 'create'])->name('reports.create');
+    Route::post('cek-alat', [UserReportsController::class, 'store'])->name('reports.store');
+});
+
+//  PROFIL (untuk semua role login)
+Route::middleware('auth')->group(function () {
+    Route::get('/profil', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profil/update', [ProfileController::class, 'update'])->name('profile.update');
 });
