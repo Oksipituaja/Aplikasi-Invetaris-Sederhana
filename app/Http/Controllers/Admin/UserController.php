@@ -18,7 +18,7 @@ class UserController extends Controller
             $query->where('name', 'like', '%' . $request->input('cari') . '%');
         }
 
-        $users = $query->get();
+        $users = $query->orderBy('created_at', 'desc')->get();
 
         return view('admin.users.index', compact('users'));
     }
@@ -33,7 +33,7 @@ class UserController extends Controller
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
-        User::create($validated);
+        $user = User::create($validated);
 
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan!');
     }

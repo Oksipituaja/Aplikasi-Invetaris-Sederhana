@@ -32,7 +32,7 @@
         (object) [
             'title' => 'Home Pengguna',
             'path' => route('user.home'),
-            'icon' => 'fas fa-user',
+            'icon' => 'fas fa-home',
             'roles' => ['user'],
         ],
     ])->filter(fn($menu) => in_array($role, $menu->roles));
@@ -40,31 +40,26 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <div class="sidebar">
-        @if ($user)
-            <div class="user-panel mt-3 pb-3 mb-3">
-                <div class="info ps-2">
-                    <a href="#" class="d-block">
-                        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-3">
-                            <h2 class="h6 mb-0 mr-2 text-white">{{ $user->name }}</h2>
-                            <span class="badge bg-primary fw-bold text-uppercase px-3 py-1">
-                                {{ ucfirst($role) }}
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        @endif
+@if ($user)
+    <div class="user-panel mt-3 pb-3 mb-3 px-3">
+        <div class="info">
+            <a href="#" class="d-block text-white">
+                <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2">
+                    {{-- Icon + Username --}}
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fas {{ $role === 'admin' ? 'fa-user-gear' : 'fa-user' }} fa-xl text-white mr-2"></i>
+                        <span class="text-lg text-break mr-2">{{ $user->name }}</span>
+                    </div>
 
-        <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Cari menu..."
-                    aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar"><i class="fas fa-search fa-fw"></i></button>
+                    {{-- Badge Role --}}
+                    <span class="badge bg-primary text-uppercase fw-bold px-3 py-1">
+                        {{ ucfirst($role) }}
+                    </span>
                 </div>
-            </div>
+            </a>
         </div>
-
+    </div>
+@endif
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 @foreach ($menus as $menu)
