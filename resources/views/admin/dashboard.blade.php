@@ -10,11 +10,6 @@
 
             <h1 class="mb-0">Dashboard</h1>
         </div>
-        <div class="col text-right">
-            <ol class="breadcrumb float-sm-right bg-white px-2 py-1 rounded">
-                <li class="breadcrumb-item active">Beranda</li>
-            </ol>
-        </div>
     </div>
 @endsection
 

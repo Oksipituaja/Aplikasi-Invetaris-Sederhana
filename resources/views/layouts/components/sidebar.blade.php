@@ -3,7 +3,6 @@
 
     $user = Auth::user();
     $role = $user?->role ?? 'guest';
-
     $menus = collect([
         (object) [
             'title' => 'Dashboard',
@@ -38,28 +37,31 @@
     ])->filter(fn($menu) => in_array($role, $menu->roles));
 @endphp
 
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <div class="sidebar">
-@if ($user)
-    <div class="user-panel mt-3 pb-3 mb-3 px-3">
-        <div class="info">
-            <a href="#" class="d-block text-white">
-                <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between gap-2">
-                    {{-- Icon + Username --}}
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="fas {{ $role === 'admin' ? 'fa-user-gear' : 'fa-user' }} fa-xl text-white mr-2"></i>
-                        <span class="text-lg text-break mr-2">{{ $user->name }}</span>
-                    </div>
+        @if ($user)
+        <div class="user-panel mt-3 pb-2 mb-3">
+            <div class="">
+                    <a href="#" class="d-block text-white">
+                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-between">
+                            {{-- Icon + Username --}}
+                            <div class="ml-3 mr-2">
+                            <i class="fas {{ $role === 'admin' ? 'fa-user-gear' : 'fa-user' }} fa-2x text-white"></i>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 mr-1">
+                                <span class="text-lg text-break">{{ $user->name }}</span>
+                            </div>
 
-                    {{-- Badge Role --}}
-                    <span class="badge bg-primary text-uppercase fw-bold px-3 py-1">
-                        {{ ucfirst($role) }}
-                    </span>
+                            {{-- Badge Role --}}
+                            <span class="badge bg-primary text-uppercase fw-bold px-2 py-1">
+                                {{ ucfirst($role) }}
+                            </span>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-    </div>
-@endif
+            </div>
+        @endif
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 @foreach ($menus as $menu)

@@ -8,7 +8,7 @@
             <div>
                 <strong>{{ $greeting }}</strong>, {{ $user->name }} 👋
             </div>
-            <div class="text-muted">
+            <div class="text-white-75">
                 {{ now()->translatedFormat('l, d F Y - H:i') }}
             </div>
         </div>
