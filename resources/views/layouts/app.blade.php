@@ -7,11 +7,12 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{ asset('templates/plugins/fontawesome-free/css/all.min.css')}}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,600&display=swap">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('templates/dist/css/adminlte.min.css')}}"></head>
+  <link rel="stylesheet" href="https://aplikasi-invetaris-sederhan-vau69.sevalla.app/templates/dist/css/adminlte.min.css">
+</head>
 <body class="bg-light text-dark">
 
     <header class="navbar navbar-light bg-white shadow-sm px-4">
