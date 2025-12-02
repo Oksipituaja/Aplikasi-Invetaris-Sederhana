@@ -13,7 +13,7 @@
       <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
       <!-- Theme style -->
-    <link rel="stylesheet" href="https://aplikasi-invetaris-sederhan-vau69.sevalla.app/templates/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://aplikasi-invetaris-sederhana.sevalla.app/templates/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
