@@ -73,7 +73,8 @@
     <!-- Modal -->
     <div class="modal fade" id="modalTambahUser" tabindex="-1">
         <div class="modal-dialog">
-            <form method="POST" action="{{ route('admin.users.store') }}">
+            <form method="POST" action="{{ secure_url(route('admin.users.store', [], false)) }}">
+            <!-- <form method="POST" action="{{ route('admin.users.store') }}"> -->
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
