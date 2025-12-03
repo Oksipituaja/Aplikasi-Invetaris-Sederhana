@@ -10,15 +10,15 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Font Awesome (untuk ikon) -->
-<link rel="stylesheet" href="{{ asset('templates/plugins/fontawesome-free/css/all.min.css') }}">
+<link rel="stylesheet" href="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/fontawesome-free/css/all.min.css">
 
 <!-- Tempus Dominus Bootstrap 4 -->
-<link rel="stylesheet" href="{{ asset('templates/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
-<script src="{{ asset('templates/plugins/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('templates/plugins/moment/moment.min.js') }}"></script>
+<link rel="stylesheet" href="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+<script src="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/jquery/jquery.min.js"></script>
+<script src="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/moment/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone.min.js"></script>
-<script src="{{ asset('templates/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<script src="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
