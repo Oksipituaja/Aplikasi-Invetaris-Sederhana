@@ -55,12 +55,12 @@
                         </td>
                         <td>
                             {{ $product->tanggal_mulai 
-                                ? \Carbon\Carbon::parse($product->tanggal_mulai)->timezone('Asia/Jakarta')->format('d M Y H:i') 
+                                ? \Carbon\Carbon::parse($product->tanggal_mulai)->timezone('Asia/Jakarta')->format('d M Y') 
                                 : '-' }}
                         </td>
                         <td>
                             {{ $product->tanggal_selesai 
-                                ? \Carbon\Carbon::parse($product->tanggal_selesai)->timezone('Asia/Jakarta')->format('d M Y H:i') 
+                                ? \Carbon\Carbon::parse($product->tanggal_selesai)->timezone('Asia/Jakarta')->format('d M Y') 
                                 : '-' }}
                         </td>
                         <td>
