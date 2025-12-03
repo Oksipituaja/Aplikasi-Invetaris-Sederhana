@@ -63,33 +63,19 @@
                             <input type="text" name="nup_ruangan" class="form-control"
                                 value="{{ old('nup_ruangan', $product->nup_ruangan) }}">
                         </div>
-
                         <!-- Tanggal Mulai -->
                         <div class="form-group">
                             <label>Tanggal Mulai</label>
-                            <div class="input-group date" id="tanggalMulai" data-target-input="nearest">
-                                <input type="date" name="tanggal_mulai" class="form-control datetimepicker-input"
-                                    data-target="#tanggalMulai" data-toggle="datetimepicker"
-                                    value="{{ old('tanggal_mulai', $product->tanggal_mulai) }}" />
-                                <div class="input-group-append" data-target="#tanggalMulai" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
+                            <input type="date" name="tanggal_mulai" class="form-control"
+                                value="{{ old('tanggal_mulai', $product->tanggal_mulai ? \Carbon\Carbon::parse($product->tanggal_mulai)->format('Y-m-d') : '') }}">
                         </div>
-
+                        
                         <!-- Tanggal Selesai -->
                         <div class="form-group">
                             <label>Tanggal Selesai</label>
-                            <div class="input-group date" id="tanggalSelesai" data-target-input="nearest">
-                                <input type="date" name="tanggal_selesai" class="form-control datetimepicker-input"
-                                    data-target="#tanggalSelesai" data-toggle="datetimepicker"
-                                    value="{{ old('tanggal_selesai', $product->tanggal_selesai) }}" />
-                                <div class="input-group-append" data-target="#tanggalSelesai" data-toggle="datetimepicker">
-                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                </div>
-                            </div>
+                            <input type="date" name="tanggal_selesai" class="form-control"
+                                value="{{ old('tanggal_selesai', $product->tanggal_selesai ? \Carbon\Carbon::parse($product->tanggal_selesai)->format('Y-m-d') : '') }}">
                         </div>
-
 
                         <!-- Kategori -->
                         <div class="form-group">
