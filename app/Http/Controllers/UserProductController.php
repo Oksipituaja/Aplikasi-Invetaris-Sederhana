@@ -31,20 +31,17 @@ class UserProductController extends Controller
             'nama_barang'     => 'required|string|max:255',
             'description'     => 'nullable|string',
             'nup_ruangan'     => 'required|string|max:255',
-            'tanggal_mulai'   => 'required|string',   // ubah ke string
-            'tanggal_selesai' => 'nullable|string',   // ubah ke string
+            'tanggal_mulai'   => 'required|date',
+            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
             'category_id'     => 'required|exists:categories,id',
             'stok_barang'     => 'required|integer|min:0',
         ]);
 
-        // Parsing manual sesuai format datepicker (AM/PM)
-        $validated['tanggal_mulai'] = Carbon::createFromFormat('d/m/Y h:i A', $request->tanggal_mulai)
-                                            ->format('Y-m-d H:i:s');
-
-        if ($request->tanggal_selesai) {
-            $validated['tanggal_selesai'] = Carbon::createFromFormat('d/m/Y h:i A', $request->tanggal_selesai)
-                                                  ->format('Y-m-d H:i:s');
-        }
+        // Simpan hanya tanggal (Y-m-d)
+        $validated['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
+        $validated['tanggal_selesai'] = $request->tanggal_selesai
+            ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
+            : null;
 
         $validated['user_id'] = Auth::id();
 
@@ -77,19 +74,16 @@ class UserProductController extends Controller
             'nama_barang'     => 'required|string|max:255',
             'description'     => 'nullable|string',
             'nup_ruangan'     => 'required|string|max:255',
-            'tanggal_mulai'   => 'required|string',   // ubah ke string
-            'tanggal_selesai' => 'nullable|string',   // ubah ke string
+            'tanggal_mulai'   => 'required|date',
+            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
             'category_id'     => 'required|exists:categories,id',
             'stok_barang'     => 'required|integer|min:0',
         ]);
 
-        $validated['tanggal_mulai'] = Carbon::createFromFormat('d/m/Y h:i A', $request->tanggal_mulai)
-                                            ->format('Y-m-d H:i:s');
-
-        if ($request->tanggal_selesai) {
-            $validated['tanggal_selesai'] = Carbon::createFromFormat('d/m/Y h:i A', $request->tanggal_selesai)
-                                                  ->format('Y-m-d H:i:s');
-        }
+        $validated['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
+        $validated['tanggal_selesai'] = $request->tanggal_selesai
+            ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
+            : null;
 
         $product->update($validated);
 
