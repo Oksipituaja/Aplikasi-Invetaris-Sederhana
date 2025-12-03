@@ -28,31 +28,6 @@
                             @method('PUT')
                         @endif
 
-                        {{-- Tambahan field mahasiswa --}}
-                        <div class="form-group">
-                            <label>Nama Lengkap</label>
-                            <input type="text" name="nama_lengkap" class="form-control"
-                                value="{{ old('nama_lengkap', $product->nama_lengkap ?? '') }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label>NIM</label>
-                            <input type="text" name="nim" class="form-control"
-                                value="{{ old('nim', $product->nim ?? '') }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Prodi</label>
-                            <select name="prodi" class="form-control">
-                                <option value="">-- Pilih Prodi --</option>
-                                <option value="TI" {{ old('prodi', $product->prodi ?? '') == 'TI' ? 'selected' : '' }}>Teknik Informatika</option>
-                                <option value="SI" {{ old('prodi', $product->prodi ?? '') == 'SI' ? 'selected' : '' }}>Sistem Informasi</option>
-                                <option value="RPL" {{ old('prodi', $product->prodi ?? '') == 'RPL' ? 'selected' : '' }}>Rekayasa Perangkat Lunak</option>
-                                <option value="DKV" {{ old('prodi', $product->prodi ?? '') == 'DKV' ? 'selected' : '' }}>Desain Komunikasi Visual</option>
-                                {{-- Tambahkan opsi lain sesuai kebutuhan --}}
-                            </select>
-                        </div>
-
                         <div class="form-group">
                             <label>Nama Barang</label>
                             <input type="text" name="nama_barang" class="form-control"
@@ -81,7 +56,6 @@
                             <input type="date" name="tanggal_selesai" class="form-control"
                                 value="{{ old('tanggal_selesai', $product->tanggal_selesai ?? '') }}">
                         </div>
-
                         @if (isset($categories))
                             <div class="form-group">
                                 <label>Kategori</label>
@@ -96,12 +70,12 @@
                                 </select>
                             </div>
                         @endif
-
                         <div class="form-group">
                             <label>Stok</label>
                             <input type="number" name="stok_barang" class="form-control"
-                                value="{{ old('stok_barang', $product->stok_barang ?? '') }}">
+                                value="{{ old('stok_barang', $product->stok_barang ?? '-') }}">
                         </div>
+
 
                         <button type="submit" class="btn btn-primary">{{ isset($product) ? 'Update' : 'Simpan' }}</button>
                         <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Batal</a>
