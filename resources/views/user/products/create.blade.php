@@ -62,13 +62,13 @@
                     <!-- Tanggal Mulai -->
                     <div class="form-group">
                         <label>Tanggal Mulai</label>
-                        <input type="datetime-local" name="tanggal_mulai" class="form-control" value="{{ old('tanggal_mulai') }}">
+                        <input type="date" name="tanggal_mulai" class="form-control" value="{{ old('tanggal_mulai') }}">
                     </div>
 
                     <!-- Tanggal Selesai -->
                     <div class="form-group">
                         <label>Tanggal Selesai</label>
-                        <input type="datetime-local" name="tanggal_selesai" class="form-control" value="{{ old('tanggal_selesai') }}">
+                        <input type="date" name="tanggal_selesai" class="form-control" value="{{ old('tanggal_selesai') }}">
                     </div>
 
                     <!-- Kategori -->
