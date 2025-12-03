@@ -68,9 +68,12 @@
                         <div class="form-group">
                             <label>Tanggal Mulai</label>
                             <div class="input-group date" id="tanggalMulai" data-target-input="nearest">
-                                <input type="text" name="tanggal_mulai" class="form-control datetimepicker-input"
+                                <input type="date" name="tanggal_mulai" class="form-control datetimepicker-input"
                                     data-target="#tanggalMulai" data-toggle="datetimepicker"
                                     value="{{ old('tanggal_mulai', $product->tanggal_mulai) }}" />
+                                <div class="input-group-append" data-target="#tanggalMulai" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
                             </div>
                         </div>
 
@@ -78,11 +81,15 @@
                         <div class="form-group">
                             <label>Tanggal Selesai</label>
                             <div class="input-group date" id="tanggalSelesai" data-target-input="nearest">
-                                <input type="text" name="tanggal_selesai" class="form-control datetimepicker-input"
+                                <input type="date" name="tanggal_selesai" class="form-control datetimepicker-input"
                                     data-target="#tanggalSelesai" data-toggle="datetimepicker"
                                     value="{{ old('tanggal_selesai', $product->tanggal_selesai) }}" />
+                                <div class="input-group-append" data-target="#tanggalSelesai" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
                             </div>
                         </div>
+
 
                         <!-- Kategori -->
                         <div class="form-group">
@@ -115,47 +122,47 @@
 
     <!-- Inisialisasi DateTimePicker -->
     <script>
-    // Set timezone dan locale
-    moment.tz.setDefault("Asia/Jakarta");
-    moment.locale('id'); // aktifkan locale Indonesia
+        // Set timezone dan locale
+        moment.tz.setDefault("Asia/Jakarta");
+        moment.locale('id'); // aktifkan locale Indonesia
 
-    $(function () {
-        if (typeof $.fn.datetimepicker === 'undefined') {
-            console.error('Tempus Dominus tidak terdeteksi. Cek urutan dan path asset.');
-            return;
-        }
-
-        $('#tanggalMulai').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm', // 24 jam
-            locale: 'id',
-            icons: {
-                time: 'fa fa-clock',
-                date: 'fa fa-calendar',
-                up: 'fa fa-chevron-up',
-                down: 'fa fa-chevron-down',
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-crosshairs',
-                clear: 'fa fa-trash',
-                close: 'fa fa-times'
+        $(function() {
+            if (typeof $.fn.datetimepicker === 'undefined') {
+                console.error('Tempus Dominus tidak terdeteksi. Cek urutan dan path asset.');
+                return;
             }
-        });
 
-        $('#tanggalSelesai').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss', // 24 jam + detik
-            locale: 'id',
-            icons: {
-                time: 'fa fa-clock',
-                date: 'fa fa-calendar',
-                up: 'fa fa-chevron-up',
-                down: 'fa fa-chevron-down',
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-crosshairs',
-                clear: 'fa fa-trash',
-                close: 'fa fa-times'
-            }
+            $('#tanggalMulai').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm', // 24 jam
+                locale: 'id',
+                icons: {
+                    time: 'fa fa-clock',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-chevron-up',
+                    down: 'fa fa-chevron-down',
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-crosshairs',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-times'
+                }
+            });
+
+            $('#tanggalSelesai').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss', // 24 jam + detik
+                locale: 'id',
+                icons: {
+                    time: 'fa fa-clock',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-chevron-up',
+                    down: 'fa fa-chevron-down',
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-crosshairs',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-times'
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endsection
