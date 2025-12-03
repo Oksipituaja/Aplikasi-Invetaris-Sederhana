@@ -10,33 +10,6 @@ use Carbon\Carbon;
 
 class ProductController extends Controller
 {
-    protected function parseDateInput(?string $value): ?Carbon
-    {
-        if (!$value) return null;
-        $value = trim($value);
-
-        $formats = [
-            'd/m/Y h:i A',
-            'd/m/Y H:i',
-            'Y-m-d H:i',
-            'Y-m-d H:i:s',
-            'd-m-Y H:i',
-            'd-m-Y h:i A',
-        ];
-
-        foreach ($formats as $f) {
-            try {
-                return Carbon::createFromFormat($f, $value);
-            } catch (\Exception $e) {}
-        }
-
-        try {
-            return Carbon::parse($value);
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
     public function index(Request $request)
     {
         $categories = Category::all();
@@ -65,26 +38,22 @@ class ProductController extends Controller
             'nama_barang'     => 'required|string|max:255',
             'description'     => 'nullable|string',
             'nup_ruangan'     => 'required|string|max:255',
-            'tanggal_mulai'   => 'required|string',
-            'tanggal_selesai' => 'nullable|string',
+            'tanggal_mulai'   => 'required|date',
+            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
             'category_id'     => 'required|exists:categories,id',
             'stok_barang'     => 'required|integer|min:0',
         ]);
 
         $data = $request->only([
             'nama_lengkap','nim','prodi','nama_barang','description',
-            'nup_ruangan','tanggal_mulai','tanggal_selesai','stok_barang','category_id'
+            'nup_ruangan','stok_barang','category_id'
         ]);
 
-        $mulai = $this->parseDateInput($request->tanggal_mulai);
-        $selesai = $this->parseDateInput($request->tanggal_selesai);
-
-        if (!$mulai) {
-            return back()->withErrors(['tanggal_mulai' => 'Format tanggal mulai tidak valid.'])->withInput();
-        }
-
-        $data['tanggal_mulai'] = $mulai->format('Y-m-d H:i:s');
-        $data['tanggal_selesai'] = $selesai ? $selesai->format('Y-m-d H:i:s') : null;
+        // Simpan tanggal dalam format YYYY-MM-DD
+        $data['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
+        $data['tanggal_selesai'] = $request->tanggal_selesai
+            ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
+            : null;
 
         Product::create($data);
 
@@ -106,26 +75,21 @@ class ProductController extends Controller
             'nama_barang'     => 'required|string|max:255',
             'description'     => 'nullable|string',
             'nup_ruangan'     => 'required|string|max:255',
-            'tanggal_mulai'   => 'required|string',
-            'tanggal_selesai' => 'nullable|string',
+            'tanggal_mulai'   => 'required|date',
+            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
             'category_id'     => 'required|exists:categories,id',
             'stok_barang'     => 'required|integer|min:0',
         ]);
 
         $data = $request->only([
             'nama_lengkap','nim','prodi','nama_barang','description',
-            'nup_ruangan','tanggal_mulai','tanggal_selesai','stok_barang','category_id'
+            'nup_ruangan','stok_barang','category_id'
         ]);
 
-        $mulai = $this->parseDateInput($request->tanggal_mulai);
-        $selesai = $this->parseDateInput($request->tanggal_selesai);
-
-        if (!$mulai) {
-            return back()->withErrors(['tanggal_mulai' => 'Format tanggal mulai tidak valid.'])->withInput();
-        }
-
-        $data['tanggal_mulai'] = $mulai->format('Y-m-d H:i:s');
-        $data['tanggal_selesai'] = $selesai ? $selesai->format('Y-m-d H:i:s') : null;
+        $data['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
+        $data['tanggal_selesai'] = $request->tanggal_selesai
+            ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
+            : null;
 
         $product->update($data);
 
