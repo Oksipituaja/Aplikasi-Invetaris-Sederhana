@@ -64,6 +64,7 @@
                         <th>Kategori</th>
                         <th>Stok</th>
                         <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,6 +78,7 @@
                                 </span>
                             </td>
                             <td>{{ $produk->tanggal_mulai }}</td>
+                            <td>{{ $produk->tanggal_selesai }}</td>
                         </tr>
                     @empty
                         <tr>

@@ -60,6 +60,9 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>NIM</th>
+                                    <th>Prodi</th>
                                     <th>Nama Barang</th>
                                     <th>Keterangan</th>
                                     <th>NUP/Ruangan</th>
@@ -74,7 +77,10 @@
                                 @foreach ($products as $product)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $product->nama_barang }}</td> {{-- sebagai keterangan --}}
+                                        <td>{{ $product->nama_lengkap ?? '-' }}</td>
+                                        <td>{{ $product->nim ?? '-' }}</td>
+                                        <td>{{ $product->prodi ?? '-' }}</td>
+                                        <td>{{ $product->nama_barang }}</td>
                                         <td>{{ $product->description }}</td>
                                         <td>{{ $product->nup_ruangan ?? '-' }}</td>
                                         <td>{{ $product->tanggal_mulai }}</td>
@@ -97,10 +103,11 @@
                                                 </form>
                                             </div>
                                         </td>
-                                        <td>{{ $product->category->nama_barang ?? '-' }}</td> {{-- sebagai kerusakan --}}
+                                        <td>{{ $product->category->nama_barang ?? '-' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
+
                         </table>
                     </div>
                 </div>

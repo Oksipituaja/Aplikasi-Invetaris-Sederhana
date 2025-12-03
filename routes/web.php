@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ContactController;
 
 //  Autentikasi (Guest only)
 Route::middleware('guest')->group(function () {
@@ -60,8 +59,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profil/update', [ProfileController::class, 'update'])->name('profile.update');
-
-    // ✅ Halaman Kontak (akses login saja)
-    Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-    Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 });

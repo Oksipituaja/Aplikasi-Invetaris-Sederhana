@@ -24,6 +24,9 @@
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-light">
                     <tr>
+                        <th>Nama Lengkap</th>
+                        <th>NIM</th>
+                        <th>Prodi</th>
                         <th>Nama Barang</th>
                         <th>Keterangan</th>
                         <th>Kategori</th>
@@ -37,6 +40,9 @@
                 <tbody>
                     @foreach ($products as $product)
                     <tr>
+                        <td>{{ $product->nama_lengkap ?? '-' }}</td>
+                        <td>{{ $product->nim ?? '-' }}</td>
+                        <td>{{ $product->prodi ?? '-' }}</td>
                         <td>{{ $product->nama_barang }}</td>
                         <td>{{ $product->description }}</td>
                         <td>{{ $product->category->nama_barang ?? '-' }}</td>
@@ -47,8 +53,16 @@
                                 <span class="badge bg-danger ms-1">Stok Menipis</span>
                             @endif
                         </td>
-                        <td>{{ \Carbon\Carbon::parse($product->tanggal_mulai)->format('d M Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($product->tanggal_selesai)->format('d M Y') }}</td>
+                        <td>
+                            {{ $product->tanggal_mulai 
+                                ? \Carbon\Carbon::parse($product->tanggal_mulai)->timezone('Asia/Jakarta')->format('d M Y H:i') 
+                                : '-' }}
+                        </td>
+                        <td>
+                            {{ $product->tanggal_selesai 
+                                ? \Carbon\Carbon::parse($product->tanggal_selesai)->timezone('Asia/Jakarta')->format('d M Y H:i') 
+                                : '-' }}
+                        </td>
                         <td>
                             <a href="{{ route('user.products.edit', $product->id) }}" class="btn btn-sm btn-warning">
                                 ✏️ Edit

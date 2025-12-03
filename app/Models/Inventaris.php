@@ -12,6 +12,7 @@ class Inventaris extends Model
     protected $table = 'inventaris'; // Nama tabel eksplisit
 
     protected $fillable = [
+        'nama_lengkap','nim','prodi',
         'kode_barang',
         'nama_barang',
         'kategori',

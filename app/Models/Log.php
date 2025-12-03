@@ -10,6 +10,7 @@ class Log extends Model
     use HasFactory;
 
     protected $fillable = [
+        'nama_lengkap','nim','prodi',
         'tanggal',
         'nama_barang',
         'jumlah',

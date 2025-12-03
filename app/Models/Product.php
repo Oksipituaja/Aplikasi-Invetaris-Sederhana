@@ -8,9 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Product extends Model
 {
     protected $fillable = [
-        'nama_barang', 'description', 'nup_ruangan', 'tanggal_mulai',
-        'tanggal_selesai', 'stok_barang', 'category_id', 'user_id'
+        'nama_lengkap','nim','prodi','nama_barang', 'description',
+        'nup_ruangan', 'tanggal_mulai', 'tanggal_selesai',
+        'stok_barang', 'category_id', 'user_id'
     ];
+
+    protected $casts = [
+    'tanggal_mulai' => 'datetime',
+    'tanggal_selesai' => 'datetime',
+];
+
 
     public function category()
     {
