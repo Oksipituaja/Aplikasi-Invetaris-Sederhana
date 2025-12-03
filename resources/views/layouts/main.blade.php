@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Aplikasi Invetaris Sederhana</title>
+<script src="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 (CSS & JS) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -14,7 +15,6 @@
 
 <!-- Tempus Dominus Bootstrap 4 -->
 <link rel="stylesheet" href="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-<script src="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/jquery/jquery.min.js"></script>
 <script src="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/moment/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone.min.js"></script>
