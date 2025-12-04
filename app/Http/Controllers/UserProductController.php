@@ -37,7 +37,6 @@ class UserProductController extends Controller
             'stok_barang'     => 'required|integer|min:0',
         ]);
 
-        // Simpan hanya tanggal (Y-m-d)
         $validated['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
         $validated['tanggal_selesai'] = $request->tanggal_selesai
             ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
@@ -48,12 +47,6 @@ class UserProductController extends Controller
         Product::create($validated);
 
         return redirect()->route('user.products.index')->with('success', 'Produk berhasil ditambahkan.');
-    }
-
-    public function show(string $id)
-    {
-        $product = Product::where('user_id', Auth::id())->findOrFail($id);
-        return view('user.products.show', compact('product'));
     }
 
     public function edit(string $id)
