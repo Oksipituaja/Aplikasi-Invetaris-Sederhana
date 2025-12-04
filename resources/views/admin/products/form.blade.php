@@ -29,6 +29,24 @@
                         @endif
 
                         <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <input type="text" name="nama_lengkap" class="form-control"
+                                   value="{{ old('nama_lengkap', $product->nama_lengkap ?? '') }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>NIM</label>
+                            <input type="text" name="nim" class="form-control"
+                                   value="{{ old('nim', $product->nim ?? '') }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Prodi</label>
+                            <input type="text" name="prodi" class="form-control"
+                                   value="{{ old('prodi', $product->prodi ?? '') }}">
+                        </div>
+                        
+                        <div class="form-group">
                             <label>Nama Barang</label>
                             <input type="text" name="nama_barang" class="form-control"
                                 value="{{ old('nama_barang', $product->nama_barang ?? '') }}">
