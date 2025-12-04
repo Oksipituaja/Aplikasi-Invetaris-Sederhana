@@ -6,7 +6,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 
-//  Autentikasi (Guest only)
+// ==========================
+// AUTENTIKASI (Guest only)
+// ==========================
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [AuthController::class, 'login']);
@@ -14,21 +16,29 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
 });
 
-//  Logout untuk semua yang login
-Route::post('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+// ==========================
+// LOGOUT (Auth only)
+// ==========================
+Route::post('logout', [AuthController::class, 'logout'])
+    ->name('logout')
+    ->middleware('auth');
 
-//  Redirect root berdasarkan role login
+// ==========================
+// ROOT REDIRECT berdasarkan role
+// ==========================
 Route::get('/', function () {
     if (!Auth::check()) return redirect()->route('login');
 
     return match (Auth::user()->role) {
         'admin' => redirect()->route('admin.dashboard'),
-        'user' => redirect()->route('user.home'),
+        'user'  => redirect()->route('user.home'),
         default => abort(403, 'Role tidak dikenali'),
     };
 });
 
-//  ADMIN AREA
+// ==========================
+// ADMIN AREA
+// ==========================
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -41,7 +51,9 @@ Route::prefix('admin')->middleware(['auth', 'cekadmin'])->name('admin.')->group(
     Route::resource('users', UserController::class)->except(['show']);
 });
 
-//  USER AREA
+// ==========================
+// USER AREA
+// ==========================
 use App\Http\Controllers\User\UserHomeController;
 use App\Http\Controllers\UserProductController;
 use App\Http\Controllers\User\UserBarangController;
@@ -55,13 +67,15 @@ Route::prefix('user')->middleware(['auth', 'cekuser'])->name('user.')->group(fun
     Route::post('cek-alat', [UserReportsController::class, 'store'])->name('reports.store');
 });
 
-//  PROFIL (untuk semua role login)
+// ==========================
+// PROFIL (untuk semua role login)
+// ==========================
 Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfileController::class, 'show'])->name('profile');
     Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profil/update', [ProfileController::class, 'update'])->name('profile.update');
 
-    // ✅ Halaman Kontak (akses login saja)
+    // Halaman Kontak (akses login saja)
     Route::get('/contact', [ContactController::class, 'index'])->name('contact');
     Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 });
