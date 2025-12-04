@@ -3,119 +3,113 @@
 @section('header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1>Daftar Produk</h1>
+            <h1>{{ isset($product) ? 'Edit Produk' : 'Tambah Produk' }}</h1>
         </div>
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Beranda</a></li>
-                <li class="breadcrumb-item active">Produk</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Produk</a></li>
+                <li class="breadcrumb-item active">{{ isset($product) ? 'Edit' : 'Tambah' }}</li>
             </ol>
         </div>
     </div>
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <form
+                        action="{{ isset($product) ? route('admin.products.update', $product->id) : route('admin.products.store') }}"
+                        method="POST">
+                        @csrf
+                        @if (isset($product))
+                            @method('PUT')
+                        @endif
 
-                {{-- Tombol tambah produk --}}
-                <a href="{{ route('admin.products.create') }}" class="btn btn-success mb-3">
-                    <i class="fas fa-plus"></i> Tambah Produk
-                </a>
-
-                {{-- Filter kategori --}}
-                <form method="GET" action="{{ route('admin.products.index') }}" class="mb-3">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <select name="category_id" class="form-control" onchange="this.form.submit()">
-                                <option value="">-- Semua Kategori --</option>
-                                @foreach ($categories as $cat)
-                                    <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
-                                        {{ $cat->nama_barang }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        {{-- Tambahan field identitas --}}
+                        <div class="form-group">
+                            <label>Nama Lengkap</label>
+                            <input type="text" name="nama_lengkap" class="form-control"
+                                value="{{ old('nama_lengkap', $product->nama_lengkap ?? '') }}">
+                            @error('nama_lengkap')<div class="text-danger">{{ $message }}</div>@enderror
                         </div>
-                    </div>
-                </form>
 
-                {{-- Pesan sukses --}}
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" id="success-alert">
-                        {{ session('success') }}
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    </div>
-                    <script>
-                        setTimeout(function() {
-                            let alertBox = document.getElementById('success-alert');
-                            if (alertBox) {
-                                alertBox.classList.remove('show');
-                                alertBox.classList.add('fade');
-                                alertBox.style.opacity = '0';
-                                setTimeout(() => alertBox.remove(), 500);
-                            }
-                        }, 5000);
-                    </script>
-                @endif
+                        <div class="form-group">
+                            <label>NIM</label>
+                            <input type="text" name="nim" class="form-control"
+                                value="{{ old('nim', $product->nim ?? '') }}">
+                            @error('nim')<div class="text-danger">{{ $message }}</div>@enderror
+                        </div>
 
-                {{-- Tabel produk --}}
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Barang</th>
-                                <th>Keterangan</th>
-                                <th>NUP/Ruangan</th>
-                                <th>Tanggal Mulai</th>
-                                <th>Tanggal Selesai</th>
-                                <th>Stok</th>
-                                <th>Kategori</th>
-                                <th style="width: 120px;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($products as $product)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $product->nama_barang }}</td>
-                                    <td>{{ $product->description ?? '-' }}</td>
-                                    <td>{{ $product->nup_ruangan ?? '-' }}</td>
-                                    <td>{{ $product->tanggal_mulai }}</td>
-                                    <td>{{ $product->tanggal_selesai ?? '-' }}</td>
-                                    <td>{{ $product->stok_barang ?? '-' }}</td>
-                                    <td>{{ $product->category->nama_barang ?? '-' }}</td>
-                                    <td>
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ route('admin.products.edit', $product->id) }}" 
-                                               class="btn btn-warning" title="Edit">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <form action="{{ route('admin.products.destroy', $product->id) }}" 
-                                                  method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger" title="Hapus"
-                                                        onclick="return confirm('Yakin ingin menghapus produk ini?')">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="9" class="text-center">Belum ada data produk</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                        <div class="form-group">
+                            <label>Program Studi</label>
+                            <input type="text" name="prodi" class="form-control"
+                                value="{{ old('prodi', $product->prodi ?? '') }}">
+                            @error('prodi')<div class="text-danger">{{ $message }}</div>@enderror
+                        </div>
+
+                        {{-- Field produk --}}
+                        <div class="form-group">
+                            <label>Nama Barang</label>
+                            <input type="text" name="nama_barang" class="form-control"
+                                value="{{ old('nama_barang', $product->nama_barang ?? '') }}">
+                            @error('nama_barang')<div class="text-danger">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label>Keterangan</label>
+                            <textarea name="description" class="form-control">{{ old('description', $product->description ?? '') }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>NUP/Ruangan</label>
+                            <input type="text" name="nup_ruangan" class="form-control"
+                                value="{{ old('nup_ruangan', $product->nup_ruangan ?? '') }}">
+                            @error('nup_ruangan')<div class="text-danger">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tanggal Mulai</label>
+                            <input type="date" name="tanggal_mulai" class="form-control"
+                                value="{{ old('tanggal_mulai', $product->tanggal_mulai ?? '') }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tanggal Selesai</label>
+                            <input type="date" name="tanggal_selesai" class="form-control"
+                                value="{{ old('tanggal_selesai', $product->tanggal_selesai ?? '') }}">
+                        </div>
+
+                        @if (isset($categories))
+                            <div class="form-group">
+                                <label>Kategori</label>
+                                <select name="category_id" class="form-control">
+                                    <option value="">-- Pilih Kategori Kerusakan --</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ old('category_id', $product->category_id ?? '') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->nama_barang }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')<div class="text-danger">{{ $message }}</div>@enderror
+                            </div>
+                        @endif
+
+                        <div class="form-group">
+                            <label>Stok</label>
+                            <input type="number" name="stok_barang" class="form-control"
+                                value="{{ old('stok_barang', $product->stok_barang ?? '') }}">
+                            @error('stok_barang')<div class="text-danger">{{ $message }}</div>@enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">{{ isset($product) ? 'Update' : 'Simpan' }}</button>
+                        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Batal</a>
+                    </form>
                 </div>
-
             </div>
         </div>
     </div>
-</div>
 @endsection
