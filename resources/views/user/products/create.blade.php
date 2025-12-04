@@ -54,4 +54,17 @@
 
                     <div class="form-group">
                         <label>Tanggal Selesai</label>
-                        <input type="date" name="tanggal_selesai" class="
+                        <input type="date" name="tanggal_selesai" class="form-control" value="{{ old('tanggal_selesai') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select name="category_id" class="form-control">
+                            <option value="">-- Pilih Kategori --</option>
+                            @foreach ($categories as $cat)
+                                <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
+                                    {{ $cat->nama_kategori }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_id')<div class="
