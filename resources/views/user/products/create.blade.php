@@ -73,8 +73,24 @@
                             <option value="">-- Pilih Kategori --</option>
                             @foreach ($categories as $cat)
                                 <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
-                                    {{ $cat->nama_kategori }}
+                                    {{ $cat->nama_barang }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('category_id')<div class="
+                        @error('category_id')<div class="text-danger">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label>Stok</label>
+                        <input type="number" name="stok_barang" class="form-control" value="{{ old('stok_barang', 0) }}">
+                        @error('stok_barang')<div class="text-danger">{{ $message }}</div>@enderror
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <a href="{{ route('user.products.index') }}" class="btn btn-secondary">Batal</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
