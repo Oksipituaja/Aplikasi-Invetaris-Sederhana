@@ -44,7 +44,7 @@
                         <td>{{ $product->nim ?? '-' }}</td>
                         <td>{{ $product->prodi ?? '-' }}</td>
                         <td>{{ $product->nama_barang }}</td>
-                        <td>{{ $product->description }}</td>
+                        <td>{{ $product->description ?? '-' }}</td>
                         <td>{{ $product->category->nama_barang ?? '-' }}</td>
                         <td>{{ $product->nup_ruangan ?? '-' }}</td>
                         <td>
