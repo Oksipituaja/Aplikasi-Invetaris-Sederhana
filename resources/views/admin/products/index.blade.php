@@ -89,8 +89,8 @@
                                     <td>{{ $product->nama_barang }}</td>
                                     <td>{{ $product->description ?? '-' }}</td>
                                     <td>{{ $product->nup_ruangan ?? '-' }}</td>
-                                    <td>{{ $product->tanggal_mulai }}</td>
-                                    <td>{{ $product->tanggal_selesai ?? '-' }}</td>
+                                    <td>{{ optional($product->tanggal_mulai)->timezone('Asia/Jakarta')->format('d M Y H:i') }}</td>
+                                    <td>{{ optional($product->tanggal_selesai)->timezone('Asia/Jakarta')->format('d M Y H:i') ?? '-' }}</td>
                                     <td>{{ $product->stok_barang ?? '-' }}</td>
                                     <td>{{ $product->category->nama_barang ?? '-' }}</td>
                                     <td>
