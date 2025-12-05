@@ -20,12 +20,10 @@
         <div class="card">
             <div class="card-body">
 
-                {{-- Tombol tambah produk --}}
                 <a href="{{ route('admin.products.create') }}" class="btn btn-success mb-3">
                     <i class="fas fa-plus"></i> Tambah Produk
                 </a>
 
-                {{-- Filter kategori --}}
                 <form method="GET" action="{{ route('admin.products.index') }}" class="mb-3">
                     <div class="row">
                         <div class="col-md-4">
@@ -41,7 +39,6 @@
                     </div>
                 </form>
 
-                {{-- Pesan sukses --}}
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" id="success-alert">
                         {{ session('success') }}
@@ -60,7 +57,6 @@
                     </script>
                 @endif
 
-                {{-- Tabel produk --}}
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead class="thead-light">
@@ -103,25 +99,3 @@
                                                   method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger" title="Hapus"
-                                                        onclick="return confirm('Yakin ingin menghapus produk ini?')">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="12" class="text-center">Belum ada data produk</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
