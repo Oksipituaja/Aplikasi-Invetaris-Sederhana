@@ -1,11 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-
-
-
-
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
@@ -60,7 +55,7 @@ Route::prefix('admin')->middleware(['auth', 'cekadmin'])->name('admin.')->group(
 // USER AREA
 // ==========================
 use App\Http\Controllers\User\UserHomeController;
-use App\Http\Controllers\UserProductController;
+use App\Http\Controllers\User\UserProductController;
 use App\Http\Controllers\User\UserBarangController;
 use App\Http\Controllers\User\UserReportsController;
 
