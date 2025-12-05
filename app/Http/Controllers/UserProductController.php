@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
@@ -13,7 +13,10 @@ class UserProductController extends Controller
 {
     public function index()
     {
-        $products = Product::where('user_id', Auth::id())->with('category')->get();
+        $products = Product::where('user_id', Auth::id())
+            ->with('category')
+            ->get();
+
         return view('user.products.index', compact('products'));
     }
 
