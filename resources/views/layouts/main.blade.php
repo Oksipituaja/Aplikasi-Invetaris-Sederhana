@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aplikasi Invetaris Sederhana</title>
+  <title>Aplikasi Inventaris Sederhana</title>
 
-  <!-- Bootstrap -->
+  <!-- Bootstrap (CDN HTTPS) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Font Awesome -->
+  <!-- Font Awesome (CDN HTTPS) -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
   <!-- Google Fonts -->
@@ -18,27 +18,24 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
-  <!-- AdminLTE (via Sevalla hosting) -->
+  <!-- AdminLTE CSS via templates (HTTPS) -->
   <link rel="stylesheet" href="https://aplikasi-invetaris-sederhana.sevalla.app/templates/dist/css/adminlte.min.css">
-</head>
-
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
   @include('layouts.components.navbar')
-  <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
+  <!-- Sidebar -->
   @include('layouts.components.sidebar')
 
-  <!-- Content Wrapper. Contains page content -->
+  <!-- Content Wrapper -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+    <!-- Content Header -->
     <section class="content-header">
       <div class="container-fluid">
-       @yield('header')
-      </div><!-- /.container-fluid -->
+        @yield('header')
+      </div>
     </section>
 
     <!-- Main content -->
@@ -47,14 +44,13 @@
         @yield('content')
       </div>
     </section>
-    <!-- /.content -->
 
     <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
       <i class="fas fa-chevron-up"></i>
     </a>
   </div>
-  <!-- /.content-wrapper -->
 
+  <!-- Footer -->
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
       <b>Version</b> Tester
@@ -63,24 +59,14 @@
   </footer>
 
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+  <aside class="control-sidebar control-sidebar-dark"></aside>
 </div>
-<!-- ./wrapper -->
 
-<!-- jQuery -->
+<!-- jQuery via templates (HTTPS) -->
 <script src="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap -->
+<!-- Bootstrap via templates (HTTPS) -->
 <script src="https://aplikasi-invetaris-sederhana.sevalla.app/templates/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE -->
+<!-- AdminLTE via templates (HTTPS) -->
 <script src="https://aplikasi-invetaris-sederhana.sevalla.app/templates/dist/js/adminlte.min.js"></script>
-
-    <!-- 
-
-<script src="{{ asset('templates/plugins/jquery/jquery.min.js')}}"></script>
-<script src="{{ asset('templates/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<script src="{{ asset('templates/dist/js/adminlte.min.js')}}"></script> -->
 </body>
 </html>
