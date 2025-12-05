@@ -1,115 +1,86 @@
 <?php
 
-namespace App\Http\Controllers\User;
+use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\Category;
-use Illuminate\Http\Request;
+
+
+
+
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ContactController;
 
-class UserProductController extends Controller
-{
-    /**
-     * Tampilkan daftar produk milik user yang login.
-     */
-    public function index()
-    {
-        $products = Product::where('user_id', Auth::id())
-            ->with('category')
-            ->get();
+// ==========================
+// AUTENTIKASI (Guest only)
+// ==========================
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('register', [AuthController::class, 'register']);
+});
 
-        return view('user.products.index', compact('products'));
-    }
+// ==========================
+// LOGOUT (Auth only)
+// ==========================
+Route::post('logout', [AuthController::class, 'logout'])
+    ->name('logout')
+    ->middleware('auth');
 
-    /**
-     * Form tambah produk.
-     */
-    public function create()
-    {
-        $categories = Category::all();
-        return view('user.products.create', compact('categories'));
-    }
+// ==========================
+// ROOT REDIRECT berdasarkan role
+// ==========================
+Route::get('/', function () {
+    if (!Auth::check()) return redirect()->route('login');
 
-    /**
-     * Simpan produk baru.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nama_lengkap'    => 'required|string|max:255',
-            'nim'             => 'required|string|max:50',
-            'prodi'           => 'required|string|max:100',
-            'nama_barang'     => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'nup_ruangan'     => 'required|string|max:255',
-            'tanggal_mulai'   => 'required|date',
-            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
-            'category_id'     => 'required|exists:categories,id',
-            'stok_barang'     => 'required|integer|min:0',
-        ]);
+    return match (Auth::user()->role) {
+        'admin' => redirect()->route('admin.dashboard'),
+        'user'  => redirect()->route('user.home'),
+        default => abort(403, 'Role tidak dikenali'),
+    };
+});
 
-        $validated['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
-        $validated['tanggal_selesai'] = $request->tanggal_selesai
-            ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
-            : null;
+// ==========================
+// ADMIN AREA
+// ==========================
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\UserController;
 
-        $validated['user_id'] = Auth::id();
+Route::prefix('admin')->middleware(['auth', 'cekadmin'])->name('admin.')->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('users', UserController::class)->except(['show']);
+});
 
-        Product::create($validated);
+// ==========================
+// USER AREA
+// ==========================
+use App\Http\Controllers\User\UserHomeController;
+use App\Http\Controllers\UserProductController;
+use App\Http\Controllers\User\UserBarangController;
+use App\Http\Controllers\User\UserReportsController;
 
-        return redirect()->route('user.products.index')->with('success', 'Produk berhasil ditambahkan.');
-    }
+Route::prefix('user')->middleware(['auth', 'cekuser'])->name('user.')->group(function () {
+    Route::get('home', [UserHomeController::class, 'index'])->name('home');
+    Route::resource('products', UserProductController::class);
+    Route::get('barang', [UserBarangController::class, 'index'])->name('barang');
+    Route::get('cek-alat', [UserReportsController::class, 'create'])->name('reports.create');
+    Route::post('cek-alat', [UserReportsController::class, 'store'])->name('reports.store');
+});
 
-    /**
-     * Form edit produk.
-     */
-    public function edit(string $id)
-    {
-        $product = Product::where('user_id', Auth::id())->findOrFail($id);
-        $categories = Category::all();
-        return view('user.products.edit', compact('product', 'categories'));
-    }
+// ==========================
+// PROFIL (untuk semua role login)
+// ==========================
+Route::middleware('auth')->group(function () {
+    Route::get('/profil', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profil/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profil/update', [ProfileController::class, 'update'])->name('profile.update');
 
-    /**
-     * Update produk.
-     */
-    public function update(Request $request, string $id)
-    {
-        $product = Product::where('user_id', Auth::id())->findOrFail($id);
-
-        $validated = $request->validate([
-            'nama_lengkap'    => 'required|string|max:255',
-            'nim'             => 'required|string|max:50',
-            'prodi'           => 'required|string|max:100',
-            'nama_barang'     => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'nup_ruangan'     => 'required|string|max:255',
-            'tanggal_mulai'   => 'required|date',
-            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
-            'category_id'     => 'required|exists:categories,id',
-            'stok_barang'     => 'required|integer|min:0',
-        ]);
-
-        $validated['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
-        $validated['tanggal_selesai'] = $request->tanggal_selesai
-            ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
-            : null;
-
-        $product->update($validated);
-
-        return redirect()->route('user.products.index')->with('success', 'Produk berhasil diperbarui.');
-    }
-
-    /**
-     * Hapus produk.
-     */
-    public function destroy(string $id)
-    {
-        $product = Product::where('user_id', Auth::id())->findOrFail($id);
-        $product->delete();
-
-        return redirect()->route('user.products.index')->with('success', 'Produk berhasil dihapus.');
-    }
-}
+    // Halaman Kontak (akses login saja)
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+});
