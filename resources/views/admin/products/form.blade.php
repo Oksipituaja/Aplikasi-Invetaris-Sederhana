@@ -40,8 +40,17 @@
 
                     <div class="form-group">
                         <label>Prodi</label>
-                        <input type="text" name="prodi" class="form-control"
-                               value="{{ old('prodi', $product->prodi ?? '') }}">
+                        <select name="prodi" class="form-control">
+                            <option value="">-- Pilih Prodi --</option>
+                            @php
+                                $prodis = ['Teknik Informatika','Sistem Informasi','Manajemen','Akuntansi','Pendidikan'];
+                            @endphp
+                            @foreach ($prodis as $p)
+                                <option value="{{ $p }}" {{ old('prodi', $product->prodi ?? '') == $p ? 'selected' : '' }}>
+                                    {{ $p }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="form-group">
