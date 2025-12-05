@@ -11,13 +11,13 @@ return new class extends Migration {
             $table->id();
             $table->string('nama_lengkap')->nullable();
             $table->string('nim')->nullable();
-            $table->string('prodi')->nullable(); // isi dari dropdown
+            $table->string('prodi')->nullable();
             $table->string('nama_barang');
             $table->text('description')->nullable();
             $table->string('nup_ruangan');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai')->nullable();
-            $table->integer('stok_barang')->default(0); // stok barang
+            $table->integer('stok_barang')->default(0);
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
