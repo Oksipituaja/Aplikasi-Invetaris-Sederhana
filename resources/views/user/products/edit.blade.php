@@ -31,19 +31,17 @@
                             value="{{ old('nup_ruangan', $product->nup_ruangan) }}">
                         @error('nup_ruangan')<div class="text-danger">{{ $message }}</div>@enderror
                     </div>
-
                     <div class="form-group">
                         <label>Tanggal Mulai</label>
                         <input type="date" name="tanggal_mulai" class="form-control"
-                            value="{{ old('tanggal_mulai', $product->tanggal_mulai) }}">
+                            value="{{ old('tanggal_mulai', $product->tanggal_mulai ? $product->tanggal_mulai->format('Y-m-d') : '') }}">
                     </div>
-
+                    
                     <div class="form-group">
                         <label>Tanggal Selesai</label>
                         <input type="date" name="tanggal_selesai" class="form-control"
-                            value="{{ old('tanggal_selesai', $product->tanggal_selesai) }}">
+                            value="{{ old('tanggal_selesai', $product->tanggal_selesai ? $product->tanggal_selesai->format('Y-m-d') : '') }}">
                     </div>
-
                     <div class="form-group">
                         <label>Kategori</label>
                         <select name="category_id" class="form-control">
