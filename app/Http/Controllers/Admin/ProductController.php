@@ -31,7 +31,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_lengkap'    => 'required|string|max:255',
             'nim'             => 'required|string|max:255',
             'prodi'           => 'required|string|max:255',
@@ -44,18 +44,12 @@ class ProductController extends Controller
             'stok_barang'     => 'required|integer|min:0',
         ]);
 
-        $data = $request->only([
-            'nama_lengkap','nim','prodi','nama_barang','description',
-            'nup_ruangan','stok_barang','category_id'
-        ]);
-
-        // Simpan tanggal dalam format YYYY-MM-DD
-        $data['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
-        $data['tanggal_selesai'] = $request->tanggal_selesai
+        $validated['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
+        $validated['tanggal_selesai'] = $request->tanggal_selesai
             ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
             : null;
 
-        Product::create($data);
+        Product::create($validated);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan');
     }
@@ -68,7 +62,7 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_lengkap'    => 'required|string|max:255',
             'nim'             => 'required|string|max:255',
             'prodi'           => 'required|string|max:255',
@@ -81,17 +75,12 @@ class ProductController extends Controller
             'stok_barang'     => 'required|integer|min:0',
         ]);
 
-        $data = $request->only([
-            'nama_lengkap','nim','prodi','nama_barang','description',
-            'nup_ruangan','stok_barang','category_id'
-        ]);
-
-        $data['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
-        $data['tanggal_selesai'] = $request->tanggal_selesai
+        $validated['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
+        $validated['tanggal_selesai'] = $request->tanggal_selesai
             ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
             : null;
 
-        $product->update($data);
+        $product->update($validated);
 
         return redirect()->route('admin.products.index')->with('success', 'Barang berhasil diperbarui');
     }
