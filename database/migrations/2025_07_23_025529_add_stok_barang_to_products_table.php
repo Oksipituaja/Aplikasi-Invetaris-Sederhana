@@ -6,17 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Tambahkan kolom stok_barang ke tabel products.
+     */
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->integer('stok_barang')->default(0)->after('tanggal_selesai');
+            // Pastikan kolom belum ada sebelum ditambahkan
+            if (!Schema::hasColumn('products', 'stok_barang')) {
+                $table->integer('stok_barang')
+                      ->default(0)
+                      ->after('tanggal_selesai')
+                      ->comment('Jumlah stok barang tersedia');
+            }
         });
     }
 
+    /**
+     * Hapus kolom stok_barang saat rollback.
+     */
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('stok_barang');
+            if (Schema::hasColumn('products', 'stok_barang')) {
+                $table->dropColumn('stok_barang');
+            }
         });
     }
 };
