@@ -5,9 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
@@ -21,14 +18,10 @@ return new class extends Migration {
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->integer('stok_barang');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('products');
