@@ -70,7 +70,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
                                         <strong>{{ $product->nama_barang }}</strong><br>
-                                        <small class="text-muted">{{ $product->description ? \Illuminate\Support\Str::limit($product->description, 30) : 'Tanpa Keterangan' }}</small>
+                                        <small class="text-muted">Keterangan: {{ $product->description ? \Illuminate\Support\Str::limit($product->description, 30) : 'Tanpa Keterangan' }}</small>
                                     </td>
                                     <td>
                                         <span class="badge bg-info">{{ $product->category->nama_kategori ?? $product->category->nama_barang ?? '-' }}</span>
@@ -100,7 +100,7 @@
                                     
                                     {{-- DETAIL PJ --}}
                                     <td>
-                                        <strong>{{ $product->nama_lengkap ?? 'Unknown' }}</strong><br>
+                                        <small>Nama: {{ $product->nama_lengkap ?? 'Unknown' }}</small><br>
                                         <small>NIM: {{ $product->nim ?? '-' }}</small><br>
                                         <small>Prodi: {{ $product->prodi ?? '-' }}</small>
                                     </td>
