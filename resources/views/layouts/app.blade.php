@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse" id="userNavContent">
 
             {{-- Info User & Logout (Pindahkan ke kanan) --}}
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center ms-auto">
                 <div class="dropdown">
                     <span class="btn btn-sm btn-outline-primary dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user-circle me-1"></i> {{ auth()->user()?->name }}

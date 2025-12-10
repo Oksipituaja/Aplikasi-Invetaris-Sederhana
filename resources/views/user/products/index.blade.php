@@ -4,18 +4,18 @@
 
 @section('content')
 <div class="container py-3">
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Daftar Barang Inventaris</h4>
         <a href="{{ route('user.products.create') }}" class="btn btn-success">
             <i class="fas fa-plus"></i> Tambah Produk
         </a>
+            @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     </div>
 
     <div class="card shadow-sm border-0">

@@ -15,7 +15,7 @@
 
                     <div class="form-group mb-3">
                         <label>Nama Lengkap</label>
-                        <input type="text" name="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" value="{{ old('nama_lengkap', auth()->user()->name ?? '') }}" required>
+                        <input type="text" name="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" value="{{ old('nama_lengkap') }}" required>
                         @error('nama_lengkap')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
