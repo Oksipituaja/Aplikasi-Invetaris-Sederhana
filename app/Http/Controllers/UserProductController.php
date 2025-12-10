@@ -1,11 +1,10 @@
 <?php
 
-// Pastikan namespace ini sesuai dengan lokasi file Anda, jika berada di subfolder User, maka:
-namespace App\Http\Controllers\User; 
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category; // Pastikan Anda menggunakan Model Category
-use App\Models\Product;  // Pastikan Anda menggunakan Model Product
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,16 +16,16 @@ class UserProductController extends Controller
         return view('user.products.index', compact('products'));
     }
 
-    // [FIX 1: Kirim data categories ke view create]
     public function create()
     {
+        // FIX: Mengirimkan data categories
         $categories = Category::all();
         return view('user.products.create', compact('categories'));
     }
 
-    // [FIX 2: Implementasi store dengan validasi dan user_id]
     public function store(Request $request)
     {
+        // 1. Validasi Data
         $validatedData = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'nim' => 'required|string|max:20',
@@ -40,30 +39,30 @@ class UserProductController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
         
+        // 2. Tambahkan user_id
         $validatedData['user_id'] = Auth::id();
         
-        // Simpan data
+        // 3. Simpan data
         Product::create($validatedData);
 
         return redirect()->route('user.products.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    // [FIX 3: Kirim data categories ke view edit dan otorisasi]
     public function edit(Product $product)
     {
-        // Otorisasi: Hanya user pemilik yang bisa edit
+        // Otorisasi: Pastikan user hanya bisa edit produknya sendiri
         if ($product->user_id !== Auth::id()) {
             return redirect()->route('user.products.index')->with('error', 'Anda tidak diizinkan mengedit produk ini.');
         }
 
+        // FIX: Mengirimkan data categories
         $categories = Category::all();
         return view('user.products.edit', compact('product', 'categories'));
     }
 
-    // [FIX 4: Implementasi update dengan validasi dan otorisasi]
     public function update(Request $request, Product $product)
     {
-        // Otorisasi: Hanya user pemilik yang bisa update
+        // Otorisasi: Pastikan user hanya bisa update produknya sendiri
         if ($product->user_id !== Auth::id()) {
             return redirect()->route('user.products.index')->with('error', 'Anda tidak diizinkan mengubah produk ini.');
         }
@@ -86,7 +85,6 @@ class UserProductController extends Controller
         return redirect()->route('user.products.index')->with('success', 'Produk berhasil diperbarui!');
     }
 
-    // Metode destroy sudah berfungsi, hanya memastikan otorisasi
     public function destroy(Product $product)
     {
         if ($product->user_id !== Auth::id()) {
