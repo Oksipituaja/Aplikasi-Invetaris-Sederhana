@@ -74,22 +74,22 @@
                                 <td>
                                     {{ $product->tanggal_selesai ? \Carbon\Carbon::parse($product->tanggal_selesai)->format('d M Y') : '-' }}
                                 </td>
-                                <td class="text-center">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        {{-- Tombol Edit --}}
-                                        <a href="{{ route('user.products.edit', $product->id) }}" class="btn btn-warning text-white" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        
-                                        {{-- Tombol Hapus --}}
-                                        <form action="{{ route('user.products.destroy', $product->id) }}" method="POST" class="d-inline" 
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus barang: {{ $product->nama_barang }}?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" title="Hapus"><i class="fas fa-trash"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <td text-center align-middle"> 
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ route('user.products.edit', $product->id) }}" 
+                                               class="btn btn-warning text-white d-inline-flex justify-content-center align-items-center me-1" title="Edit" style="width: 35px; height: 35px; padding: 0; border-radius: 1;">> 
+                                                <i class="fas fa-edit fa-sm"></i> 
+                                            </a>
+                                            <form action="{{ route('user.products.destroy', $product->id) }}" 
+                                                  method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus produk {{ $product->nama_barang }}?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="btn btn-danger d-inline-flex justify-content-center align-items-center" title="Hapus" style="width: 35px; height: 35px; padding: 0; border-radius: 1;">
+                                                    <i class="fas fa-trash fa-sm"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
                             </tr>
                             @endforeach
                         </tbody>
