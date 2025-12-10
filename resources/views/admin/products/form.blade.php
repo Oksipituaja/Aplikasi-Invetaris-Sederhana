@@ -90,9 +90,11 @@
                         <label for="photo">Foto Penanggung Jawab (Opsional)</label>
                         @if (isset($product) && $product->photo_path)
                             <div class="mb-2">
+                                <a href="{{ Storage::url($product->photo_path) }}">
                                 <img src="{{ Storage::url($product->photo_path) }}" 
                                      alt="Foto Lama" 
-                                     style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px; border: 1px solid #ddd;">
+                                     style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px; border: 1px solid #ddd;">    
+                                </a>
                                 <small class="text-muted d-block">Foto lama. Biarkan kosong jika tidak ingin diubah.</small>
                             </div>
                         @endif
