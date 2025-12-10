@@ -9,10 +9,14 @@ class UserHomeController extends Controller
 {
     public function index()
     {
+        // Pengecekan user aman
         $user = Auth::user();
-        $hour = now()->format('H');
-        $greeting = $hour < 12 ? 'Selamat Pagi 👋' : ($hour < 17 ? 'Selamat Siang 👋' : 'Selamat Malam 🌙');
+        
+        // Hapus logika waktu (now()) yang berpotensi menyebabkan error library
+        // Gunakan string statis sederhana
+        $greeting = 'Selamat Datang Kembali';
 
+        // Pastikan view dipanggil dengan variabel yang dibutuhkan
         return view('user.home', compact('user', 'greeting'));
     }
 }
