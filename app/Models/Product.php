@@ -1,7 +1,11 @@
 <?php
 
+namespace App\Models; // WAJIB ADA
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Category; // WAJIB DIIMPOR
+use App\Models\User;     // WAJIB DIIMPOR
 
 class Product extends Model
 {
@@ -11,8 +15,8 @@ class Product extends Model
         'nama_lengkap',
         'nim',
         'prodi',
-        'phone_number', // <--- WAJIB DITAMBAHKAN
-        'photo_path',   // <--- WAJIB DITAMBAHKAN
+        'phone_number', 
+        'photo_path',   
         
         // 2. DATA BARANG LAMA
         'nama_barang',
@@ -24,7 +28,6 @@ class Product extends Model
         'category_id',
     ];
 
-    // FIX UTAMA: Baris ini mewajibkan Laravel mengubah string database jadi objek tanggal (Carbon)
     protected $casts = [
         'tanggal_mulai' => 'datetime',
         'tanggal_selesai' => 'datetime',
