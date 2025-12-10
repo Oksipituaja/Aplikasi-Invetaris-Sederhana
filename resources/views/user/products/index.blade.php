@@ -28,6 +28,7 @@
                             <tr>
                                 <th>Nama Barang</th>
                                 <th>Kategori</th>
+                                <th>Foto PJ</th>
                                 <th>NUP/Ruangan</th>
                                 <th class="text-center">Stok</th>
                                 <th>Mulai</th>
@@ -46,6 +47,20 @@
                                     {{-- Asumsi kategori memiliki properti nama_kategori atau nama_barang --}}
                                     <span class="badge bg-secondary">{{ $product->category->nama_kategori ?? $product->category->nama_barang ?? '-' }}</span>
                                 </td>
+                               <td class="text-center">
+                                        @if ($product->photo_path)
+                                            <a href="{{ Storage::url($product->photo_path) }}" 
+                                               {{-- HAPUS data-toggle dan data-target agar JS manual yang mengontrol --}}
+                                               data-photo-url="{{ Storage::url($product->photo_path) }}"
+                                               data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}"
+                                               class="photo-trigger"> {{-- Tambahkan class untuk target JS --}}
+                                                <img src="{{ Storage::url($product->photo_path) }}" alt="Foto PJ" 
+                                                     class="img-circle" style="width: 35px; height: 35px; object-fit: cover; border: 1px solid #ddd;">
+                                            </a>
+                                        @else
+                                            <i class="fas fa-user-circle fa-2x text-muted" title="Tidak Ada Foto"></i>
+                                        @endif
+                                    </td>
                                 <td>{{ $product->nup_ruangan ?? '-' }}</td>
                                 <td class="text-center">
                                     {{ $product->stok_barang }}
