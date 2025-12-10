@@ -7,25 +7,41 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log; // Tambahan untuk logging error
 
 class UserProductController extends Controller
 {
     public function index()
     {
-        $products = Auth::user()->products()->latest()->get();
-        return view('user.products.index', compact('products'));
+        try {
+            // Mengambil produk milik user
+            $products = Auth::user()->products()->latest()->get();
+            
+            // Mengembalikan view. Pastikan file resources/views/user/products/index.blade.php ADA.
+            return view('user.products.index', compact('products'));
+        } catch (\Exception $e) {
+            // Jika error, akan tampil pesan ini daripada Error 500 polos
+            return response()->json(['error' => 'Gagal memuat halaman index: ' . $e->getMessage()], 500);
+        }
     }
 
     public function create()
     {
-        // FIX: Mengirimkan data categories
-        $categories = Category::all();
-        return view('user.products.create', compact('categories'));
+        try {
+            // Mengambil kategori untuk dropdown
+            $categories = Category::all();
+            
+            // Mengembalikan view. Pastikan file resources/views/user/products/create.blade.php ADA.
+            return view('user.products.create', compact('categories'));
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal memuat halaman create: ' . $e->getMessage()], 500);
+        }
     }
 
+    // ... (Metode store, edit, update, destroy biarkan dulu seperti sebelumnya) ...
+    
     public function store(Request $request)
     {
-        // 1. Validasi Data
         $validatedData = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'nim' => 'required|string|max:20',
@@ -39,10 +55,7 @@ class UserProductController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
         
-        // 2. Tambahkan user_id
         $validatedData['user_id'] = Auth::id();
-        
-        // 3. Simpan data
         Product::create($validatedData);
 
         return redirect()->route('user.products.index')->with('success', 'Produk berhasil ditambahkan!');
@@ -50,23 +63,15 @@ class UserProductController extends Controller
 
     public function edit(Product $product)
     {
-        // Otorisasi: Pastikan user hanya bisa edit produknya sendiri
-        if ($product->user_id !== Auth::id()) {
-            return redirect()->route('user.products.index')->with('error', 'Anda tidak diizinkan mengedit produk ini.');
-        }
-
-        // FIX: Mengirimkan data categories
+        if ($product->user_id !== Auth::id()) abort(403);
         $categories = Category::all();
         return view('user.products.edit', compact('product', 'categories'));
     }
 
     public function update(Request $request, Product $product)
     {
-        // Otorisasi: Pastikan user hanya bisa update produknya sendiri
-        if ($product->user_id !== Auth::id()) {
-            return redirect()->route('user.products.index')->with('error', 'Anda tidak diizinkan mengubah produk ini.');
-        }
-        
+        if ($product->user_id !== Auth::id()) abort(403);
+        // (Validasi sama seperti store)
         $validatedData = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'nim' => 'required|string|max:20',
@@ -79,19 +84,14 @@ class UserProductController extends Controller
             'stok_barang' => 'required|integer|min:1',
             'category_id' => 'required|exists:categories,id',
         ]);
-
         $product->update($validatedData);
-
-        return redirect()->route('user.products.index')->with('success', 'Produk berhasil diperbarui!');
+        return redirect()->route('user.products.index')->with('success', 'Update berhasil');
     }
 
     public function destroy(Product $product)
     {
-        if ($product->user_id !== Auth::id()) {
-            return redirect()->route('user.products.index')->with('error', 'Anda tidak diizinkan menghapus produk ini.');
-        }
-        
+        if ($product->user_id !== Auth::id()) abort(403);
         $product->delete();
-        return redirect()->route('user.products.index')->with('success', 'Produk berhasil dihapus!');
+        return redirect()->route('user.products.index')->with('success', 'Hapus berhasil');
     }
 }
