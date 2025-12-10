@@ -56,8 +56,9 @@
                                 <th>Barang</th>
                                 <th>Kategori</th>
                                 <th class="text-center">Stok</th>
-                                <th>Penanggung Jawab (PJ)</th>
-                                <th>PJ Detail</th>
+                                {{-- KOLOM HANYA FOTO --}}
+                                <th class="text-center" style="width: 70px;">Foto PJ</th> 
+                                <th>Penanggung Jawab (Detail)</th>
                                 <th>NUP/Ruangan</th>
                                 <th>Periode</th>
                                 <th style="width: 100px;">Aksi</th>
@@ -80,21 +81,30 @@
                                             <span class="badge bg-danger ms-1" title="Stok Menipis">Rendah</span>
                                         @endif
                                     </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            @if ($product->photo_path)
+                                    
+                                    {{-- REVISI KOLOM: HANYA FOTO (BISA DIKLIK) --}}
+                                    <td class="text-center">
+                                        @if ($product->photo_path)
+                                            <a href="#" 
+                                               data-toggle="modal" 
+                                               data-target="#photoModal" 
+                                               data-photo-url="{{ Storage::url($product->photo_path) }}"
+                                               data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}">
                                                 <img src="{{ Storage::url($product->photo_path) }}" alt="Foto PJ" 
-                                                     class="img-circle me-2" style="width: 35px; height: 35px; object-fit: cover;">
-                                            @else
-                                                <i class="fas fa-user-circle fa-2x text-muted me-2"></i>
-                                            @endif
-                                            <strong>{{ $product->nama_lengkap ?? 'Unknown' }}</strong>
-                                        </div>
+                                                     class="img-circle" style="width: 35px; height: 35px; object-fit: cover; border: 1px solid #ddd;">
+                                            </a>
+                                        @else
+                                            <i class="fas fa-user-circle fa-2x text-muted" title="Tidak Ada Foto"></i>
+                                        @endif
                                     </td>
+                                    
+                                    {{-- REVISI KOLOM: DETAIL PJ (TERMASUK NAMA LENGKAP) --}}
                                     <td>
+                                        <strong>{{ $product->nama_lengkap ?? 'Unknown' }}</strong><br>
                                         <small>NIM: {{ $product->nim ?? '-' }}</small><br>
                                         <small>Prodi: {{ $product->prodi ?? '-' }}</small>
                                     </td>
+                                    
                                     <td>{{ $product->nup_ruangan ?? '-' }}</td>
                                     <td>
                                         <small>Mulai: {{ $product->tanggal_mulai ? \Carbon\Carbon::parse($product->tanggal_mulai)->format('d/m/Y') : '-' }}</small><br>
@@ -127,7 +137,6 @@
                         </tbody>
                     </table>
                 </div>
-                {{-- Tambahkan link paginasi jika menggunakan pagination --}}
                 {{-- <div class="mt-3">
                     {{ $products->links() }}
                 </div> --}}
@@ -135,4 +144,42 @@
         </div>
     </div>
 </div>
+@endsection
+
+
+{{-- MODAL UNTUK MENAMPILKAN FOTO --}}
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="photoModalLabel">Foto Penanggung Jawab</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalPhoto" src="" class="img-fluid rounded" alt="Foto Penanggung Jawab" style="max-height: 80vh; max-width: 100%;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section('scripts')
+{{-- Script untuk memuat URL gambar ke dalam modal saat dibuka --}}
+<script>
+    $(document).ready(function() {
+        $('#photoModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Tombol <a> yang memicu modal
+            var photoUrl = button.data('photo-url'); // Ambil data URL foto
+            var photoName = button.data('photo-name'); // Ambil nama PJ
+
+            var modal = $(this);
+            modal.find('.modal-title').text('Foto: ' + (photoName || 'Penanggung Jawab'));
+            modal.find('#modalPhoto').attr('src', photoUrl);
+        });
+    });
+</script>
 @endsection
