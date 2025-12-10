@@ -85,7 +85,7 @@
                                     {{-- REVISI KOLOM: FOTO DENGAN DATA ATTRIBUTE BARU --}}
                                     <td class="text-center">
                                         @if ($product->photo_path)
-                                            <a href="#" 
+                                            <a href="{{ Storage::url($product->photo_path) }}" 
                                                {{-- HAPUS data-toggle dan data-target agar JS manual yang mengontrol --}}
                                                data-photo-url="{{ Storage::url($product->photo_path) }}"
                                                data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}"
