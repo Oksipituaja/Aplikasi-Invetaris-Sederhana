@@ -3,8 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\URL; // Import Facade URL
-use Illuminate\Support\Facades\App; // Import Facade App (opsional, untuk cek environment)
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Schema; // Opsional: untuk default string length
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,21 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // FIX: Memaksa Laravel menggunakan skema HTTPS untuk semua URL
-        // Ini mengatasi masalah "Mixed Content" pada form submission
-        
-        // Kita bisa cek apakah aplikasi berjalan di environment produksi atau jika APP_URL sudah HTTPS
-        // Hal ini penting agar di localhost (HTTP) tidak terjadi redirect loop.
+        // FIX: Memaksa skema HTTPS di environment production/staging
         if (App::environment('production') || str_contains(config('app.url'), 'https://')) {
             URL::forceScheme('https');
         }
         
-        // Catatan: Jika Anda tidak yakin tentang environment atau APP_URL, 
-        // Anda bisa menggunakan pengecekan sederhana ini:
-        /*
-        if ($this->app->environment('production')) {
-            URL::forceScheme('https');
-        }
-        */
+        // Opsional: Mengatur default string length jika Anda mengalami error "Specified key was too long"
+        // Schema::defaultStringLength(191); 
     }
 }
