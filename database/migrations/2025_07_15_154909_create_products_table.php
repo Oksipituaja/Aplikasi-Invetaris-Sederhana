@@ -9,27 +9,15 @@ return new class extends Migration {
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            
-            // --- DATA PENANGGUNG JAWAB BARU (UPDATED) ---
             $table->string('nama_lengkap')->nullable();
             $table->string('nim')->nullable();
             $table->string('prodi')->nullable();
-            
-            // BARIS TAMBAHAN UNTUK NOMOR HP
-            $table->string('phone_number', 15)->nullable(); 
-            
-            // BARIS TAMBAHAN UNTUK PATH FOTO
-            $table->string('photo_path')->nullable(); 
-
-            // --- DATA BARANG LAMA ---
             $table->string('nama_barang');
             $table->text('description')->nullable();
             $table->string('nup_ruangan');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai')->nullable();
             $table->integer('stok_barang')->default(0);
-            
-            // --- RELASI & TIMESTAMPS ---
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
