@@ -52,9 +52,11 @@
                     @if ($product->photo_path)
                         <div class="mb-2">
                             <small class="d-block text-muted">Foto saat ini:</small>
+                             <a href="{{ Storage::url($product->photo_path) }}">
                             <img src="{{ Storage::url($product->photo_path) }}" 
                                  alt="Foto saat ini" 
                                  style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                             </a>
                         </div>
                     @endif
                     <input class="form-control @error('photo') is-invalid @enderror" type="file" id="photo" name="photo" 
