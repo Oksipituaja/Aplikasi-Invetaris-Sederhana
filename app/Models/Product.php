@@ -13,6 +13,12 @@ class Product extends Model
         'stok_barang','category_id','user_id'
     ];
 
+    // FIX: Tambahkan properti $casts untuk mengkonversi kolom tanggal menjadi objek Carbon
+    protected $casts = [
+        'tanggal_mulai' => 'datetime',
+        'tanggal_selesai' => 'datetime',
+    ];
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
