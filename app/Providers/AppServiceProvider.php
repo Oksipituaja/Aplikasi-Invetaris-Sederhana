@@ -3,9 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Schema; // Opsional: untuk default string length
+// Hapus atau komen-kan USE statement yang baru ditambahkan
+// use Illuminate\Support\Facades\URL; 
+// use Illuminate\Support\Facades\App; 
+// use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,12 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // FIX: Memaksa skema HTTPS di environment production/staging
-        if (App::environment('production') || str_contains(config('app.url'), 'https://')) {
-            URL::forceScheme('https');
-        }
-        
-        // Opsional: Mengatur default string length jika Anda mengalami error "Specified key was too long"
-        // Schema::defaultStringLength(191); 
+        // HAPUS SEMUA KODE BARU DI SINI, KECUALI JIKA ANDA MEMILIKI KODE LAIN
+        // Misalnya, hanya biarkan ini:
+        // if ($this->app->environment('production')) {
+        //     URL::forceScheme('https');
+        // }
     }
 }
