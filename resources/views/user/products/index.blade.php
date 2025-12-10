@@ -84,7 +84,7 @@
                                                   method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus produk {{ $product->nama_barang }}?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="btn btn-danger d-inline-flex justify-content-center align-items-center" title="Hapus" style="width: 35px; height: 35px; padding: 0; border-radius: 1;">
+                                                <button type="submit" style="btn btn-danger d-inline-flex justify-content-center align-items-center" title="Hapus" style="width: 35px; height: 35px; padding: 0; border-radius: 1;">
                                                     <i class="fas fa-trash fa-sm"></i>
                                                 </button>
                                             </form>
