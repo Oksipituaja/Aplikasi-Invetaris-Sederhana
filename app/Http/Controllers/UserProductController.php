@@ -1,98 +1,99 @@
 <?php
 
-namespace App\Http\Controllers\User;
+// Pastikan namespace ini sesuai dengan lokasi file Anda, jika berada di subfolder User, maka:
+namespace App\Http\Controllers\User; 
 
 use App\Http\Controllers\Controller;
-
-use App\Models\Product;
-use App\Models\Category;
+use App\Models\Category; // Pastikan Anda menggunakan Model Category
+use App\Models\Product;  // Pastikan Anda menggunakan Model Product
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class UserProductController extends Controller
 {
     public function index()
     {
-        $products = Product::where('user_id', Auth::id())
-            ->with('category')
-            ->get();
-
+        $products = Auth::user()->products()->latest()->get();
         return view('user.products.index', compact('products'));
     }
 
+    // [FIX 1: Kirim data categories ke view create]
     public function create()
     {
         $categories = Category::all();
         return view('user.products.create', compact('categories'));
     }
 
+    // [FIX 2: Implementasi store dengan validasi dan user_id]
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama_lengkap'    => 'required|string|max:255',
-            'nim'             => 'required|string|max:50',
-            'prodi'           => 'required|string|max:100',
-            'nama_barang'     => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'nup_ruangan'     => 'required|string|max:255',
-            'tanggal_mulai'   => 'required|date',
+        $validatedData = $request->validate([
+            'nama_lengkap' => 'required|string|max:255',
+            'nim' => 'required|string|max:20',
+            'prodi' => 'required|string|max:100',
+            'nama_barang' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'nup_ruangan' => 'nullable|string|max:50',
+            'tanggal_mulai' => 'nullable|date',
             'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
-            'category_id'     => 'required|exists:categories,id',
-            'stok_barang'     => 'required|integer|min:0',
+            'stok_barang' => 'required|integer|min:1',
+            'category_id' => 'required|exists:categories,id',
         ]);
+        
+        $validatedData['user_id'] = Auth::id();
+        
+        // Simpan data
+        Product::create($validatedData);
 
-        $validated['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
-        $validated['tanggal_selesai'] = $request->tanggal_selesai
-            ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
-            : null;
-
-        $validated['user_id'] = Auth::id();
-
-        Product::create($validated);
-
-        return redirect()->route('user.products.index')->with('success', 'Produk berhasil ditambahkan.');
+        return redirect()->route('user.products.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    public function edit(string $id)
+    // [FIX 3: Kirim data categories ke view edit dan otorisasi]
+    public function edit(Product $product)
     {
-        $product = Product::where('user_id', Auth::id())->findOrFail($id);
+        // Otorisasi: Hanya user pemilik yang bisa edit
+        if ($product->user_id !== Auth::id()) {
+            return redirect()->route('user.products.index')->with('error', 'Anda tidak diizinkan mengedit produk ini.');
+        }
+
         $categories = Category::all();
         return view('user.products.edit', compact('product', 'categories'));
     }
 
-    public function update(Request $request, string $id)
+    // [FIX 4: Implementasi update dengan validasi dan otorisasi]
+    public function update(Request $request, Product $product)
     {
-        $product = Product::where('user_id', Auth::id())->findOrFail($id);
-
-        $validated = $request->validate([
-            'nama_lengkap'    => 'required|string|max:255',
-            'nim'             => 'required|string|max:50',
-            'prodi'           => 'required|string|max:100',
-            'nama_barang'     => 'required|string|max:255',
-            'description'     => 'nullable|string',
-            'nup_ruangan'     => 'required|string|max:255',
-            'tanggal_mulai'   => 'required|date',
+        // Otorisasi: Hanya user pemilik yang bisa update
+        if ($product->user_id !== Auth::id()) {
+            return redirect()->route('user.products.index')->with('error', 'Anda tidak diizinkan mengubah produk ini.');
+        }
+        
+        $validatedData = $request->validate([
+            'nama_lengkap' => 'required|string|max:255',
+            'nim' => 'required|string|max:20',
+            'prodi' => 'required|string|max:100',
+            'nama_barang' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'nup_ruangan' => 'nullable|string|max:50',
+            'tanggal_mulai' => 'nullable|date',
             'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
-            'category_id'     => 'required|exists:categories,id',
-            'stok_barang'     => 'required|integer|min:0',
+            'stok_barang' => 'required|integer|min:1',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        $validated['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
-        $validated['tanggal_selesai'] = $request->tanggal_selesai
-            ? Carbon::parse($request->tanggal_selesai)->format('Y-m-d')
-            : null;
+        $product->update($validatedData);
 
-        $product->update($validated);
-
-        return redirect()->route('user.products.index')->with('success', 'Produk berhasil diperbarui.');
+        return redirect()->route('user.products.index')->with('success', 'Produk berhasil diperbarui!');
     }
 
-    public function destroy(string $id)
+    // Metode destroy sudah berfungsi, hanya memastikan otorisasi
+    public function destroy(Product $product)
     {
-        $product = Product::where('user_id', Auth::id())->findOrFail($id);
+        if ($product->user_id !== Auth::id()) {
+            return redirect()->route('user.products.index')->with('error', 'Anda tidak diizinkan menghapus produk ini.');
+        }
+        
         $product->delete();
-
-        return redirect()->route('user.products.index')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('user.products.index')->with('success', 'Produk berhasil dihapus!');
     }
 }
