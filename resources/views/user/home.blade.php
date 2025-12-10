@@ -1,5 +1,4 @@
-{{-- FIX: Ubah extends ke layouts.user --}}
-@extends('layouts.user')
+@extends('layouts.app') 
 
 @section('title', 'Beranda Pengguna')
 
@@ -8,7 +7,6 @@
     <div class="col-md-10 offset-md-1">
         <div class="alert alert-info d-flex justify-content-between align-items-center shadow-sm">
             <div>
-                {{-- Menggunakan null coalescing operator (??) untuk keamanan --}}
                 <strong>{{ $greeting ?? 'Halo' }}</strong>, {{ $user->name }} 👋
             </div>
             <div class="text-white-75">

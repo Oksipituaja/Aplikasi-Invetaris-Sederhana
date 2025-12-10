@@ -1,11 +1,9 @@
-{{-- Gunakan Layout User agar tampilan konsisten --}}
-@extends('layouts.user')
+@extends('layouts.app') 
 
 @section('title', 'Daftar Barang Saya')
 
 @section('content')
 <div class="container py-3">
-    {{-- Alert jika ada pesan sukses --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -13,7 +11,6 @@
         </div>
     @endif
 
-    {{-- Tombol tambah produk --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Daftar Barang Inventaris</h4>
         <a href="{{ route('user.products.create') }}" class="btn btn-success">
@@ -21,7 +18,6 @@
         </a>
     </div>
 
-    {{-- Tabel produk --}}
     <div class="card shadow-sm border-0">
         <div class="card-body">
             @if ($products->count())
