@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app') 
 
 @section('title', 'Input Barang Baru')
 
@@ -18,8 +18,7 @@
                         <input type="text" name="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" value="{{ old('nama_lengkap', auth()->user()->name ?? '') }}" required>
                         @error('nama_lengkap')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
-                    {{-- ... (lanjutan field form) --}}
-                    
+
                     <div class="form-group mb-3">
                         <label>NIM</label>
                         <input type="text" name="nim" class="form-control @error('nim') is-invalid @enderror" value="{{ old('nim') }}" required>
