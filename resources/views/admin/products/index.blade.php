@@ -51,10 +51,10 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>No</th>
-                                <th>Nama Lengkap</th>
+                                <th>Foto</th> <th>Nama Lengkap</th>
                                 <th>NIM</th>
                                 <th>Prodi</th>
-                                <th>Nama Barang</th>
+                                <th>Nomor HP</th> <th>Nama Barang</th>
                                 <th>Keterangan</th>
                                 <th>NUP/Ruangan</th>
                                 <th>Tanggal Mulai</th>
@@ -68,14 +68,22 @@
                             @forelse ($products as $product)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        @if ($product->photo_path)
+                                            <img src="{{ Storage::url($product->photo_path) }}" 
+                                                 alt="Foto" 
+                                                 style="width: 50px; height: 50px; object-fit: cover;">
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                     <td>{{ $product->nama_lengkap }}</td>
                                     <td>{{ $product->nim }}</td>
                                     <td>{{ $product->prodi }}</td>
-                                    <td>{{ $product->nama_barang }}</td>
+                                    <td>{{ $product->phone_number ?? '-' }}</td> <td>{{ $product->nama_barang }}</td>
                                     <td>{{ $product->description ?? '-' }}</td>
                                     <td>{{ $product->nup_ruangan ?? '-' }}</td>
                                     <td>
-                                        {{-- Penanganan Tanggal yang Aman --}}
                                         {{ $product->tanggal_mulai ? $product->tanggal_mulai->format('d M Y') : '-' }}
                                     </td>
                                     <td>
@@ -102,7 +110,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="12" class="text-center">Tidak ada data produk.</td>
+                                    <td colspan="14" class="text-center">Tidak ada data produk.</td>
                                 </tr>
                             @endforelse
                         </tbody>
