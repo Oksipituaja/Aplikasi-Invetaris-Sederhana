@@ -110,22 +110,18 @@
                                         <small>Mulai: {{ $product->tanggal_mulai ? \Carbon\Carbon::parse($product->tanggal_mulai)->format('d/m/Y') : '-' }}</small><br>
                                         <small>Selesai: {{ $product->tanggal_selesai ? \Carbon\Carbon::parse($product->tanggal_selesai)->format('d/m/Y') : 'Tidak Ditentukan' }}</small>
                                     </td>
-                                    
-                                    {{-- KOLOM AKSI (DIRAPIKAN) --}}
-                                    <td class="text-center"> {{-- Ratakan ke Tengah --}}
-                                        <div class="btn-group btn-group-sm" role="group">
+                                    <td text-center align-middle"> 
+                                        <div class="btn-group" role="group">
                                             <a href="{{ route('admin.products.edit', $product->id) }}" 
-                                               class="btn btn-warning btn-sm text-white" title="Edit">
-                                                {{-- Tambahkan fa-fw agar ikon sama lebar --}}
-                                                <i class="fas fa-edit fa-fw"></i> 
+                                               class="btn btn-warning text-white d-inline-flex justify-content-center align-items-center me-1" title="Edit" style="width: 35px; height: 35px; padding: 0; border-radius: 1;">> 
+                                                <i class="fas fa-edit fa-sm"></i> 
                                             </a>
                                             <form action="{{ route('admin.products.destroy', $product->id) }}" 
                                                   method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus produk {{ $product->nama_barang }}?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
-                                                    {{-- Tambahkan fa-fw agar ikon sama lebar --}}
-                                                    <i class="fas fa-trash fa-fw"></i>
+                                                <button type="btn btn-danger d-inline-flex justify-content-center align-items-center" title="Hapus" style="width: 35px; height: 35px; padding: 0; border-radius: 1;">
+                                                    <i class="fas fa-trash fa-sm"></i>
                                                 </button>
                                             </form>
                                         </div>
