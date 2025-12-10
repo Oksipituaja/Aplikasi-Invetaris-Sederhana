@@ -35,25 +35,6 @@
         </button>
 
         <div class="collapse navbar-collapse" id="userNavContent">
-            
-            {{-- Navigasi Utama --}}
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link {{ Route::is('user.home') ? 'active fw-bold' : '' }}" href="{{ route('user.home') }}">
-                        <i class="fas fa-home me-1"></i> Beranda
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Route::is('user.products.index') || Route::is('user.products.edit') ? 'active fw-bold' : '' }}" href="{{ route('user.products.index') }}">
-                        <i class="fas fa-cubes me-1"></i> Daftar Barang Saya
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Route::is('user.products.create') ? 'active fw-bold' : '' }}" href="{{ route('user.products.create') }}">
-                        <i class="fas fa-plus-circle me-1"></i> Input Baru
-                    </a>
-                </li>
-            </ul>
 
             {{-- Info User & Logout (Pindahkan ke kanan) --}}
             <div class="d-flex align-items-center">
