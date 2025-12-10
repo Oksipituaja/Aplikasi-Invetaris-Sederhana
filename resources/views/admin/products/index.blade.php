@@ -86,7 +86,7 @@
                                     <td class="text-center">
                                         @if ($product->photo_path)
                                             {{-- MEMPERTAHANKAN LOGIKA MODAL --}}
-                                            <a href="#" 
+                                            <a href="{{ Storage::url($product->photo_path) }}" 
                                                data-photo-url="{{ Storage::url($product->photo_path) }}"
                                                data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}"
                                                class="photo-trigger">
