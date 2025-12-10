@@ -1,12 +1,15 @@
-@extends('layouts.components.user')
+{{-- FIX: Ubah extends ke layouts.user --}}
+@extends('layouts.user')
+
 @section('title', 'Beranda Pengguna')
 
 @section('content')
 <div class="row">
     <div class="col-md-10 offset-md-1">
-        <div class="alert alert-info d-flex justify-content-between align-items-center">
+        <div class="alert alert-info d-flex justify-content-between align-items-center shadow-sm">
             <div>
-                <strong>{{ $greeting }}</strong>, {{ $user->name }} 👋
+                {{-- Menggunakan null coalescing operator (??) untuk keamanan --}}
+                <strong>{{ $greeting ?? 'Halo' }}</strong>, {{ $user->name }} 👋
             </div>
             <div class="text-white-75">
                 {{ now()->translatedFormat('l, d F Y - H:i') }}
@@ -22,16 +25,9 @@
                 📦 Daftar Barang
             </a>
             <a href="{{ route('user.products.create') }}" class="btn btn-outline-success">
-                📝 Kirim Laporan Baru
+                📝 Input Barang Baru
             </a>
         </div>
-
-        @if($latestReport ?? false)
-            <div class="alert alert-warning mt-4">
-                Laporan terakhir kamu: <strong>{{ $latestReport->created_at->diffForHumans() }}</strong> 
-                untuk <em>{{ $latestReport->product->nama_barang }}</em>
-            </div>
-        @endif
     </div>
 </div>
 @endsection

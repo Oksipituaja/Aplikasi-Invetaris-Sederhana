@@ -13,7 +13,7 @@ class Product extends Model
         'stok_barang','category_id','user_id'
     ];
 
-    // FIX: Tambahkan properti $casts untuk mengkonversi kolom tanggal menjadi objek Carbon
+    // FIX UTAMA: Baris ini mewajibkan Laravel mengubah string database jadi objek tanggal
     protected $casts = [
         'tanggal_mulai' => 'datetime',
         'tanggal_selesai' => 'datetime',

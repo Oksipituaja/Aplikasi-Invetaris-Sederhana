@@ -44,17 +44,6 @@
                         {{ session('success') }}
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                     </div>
-                    <script>
-                        setTimeout(function() {
-                            let alertBox = document.getElementById('success-alert');
-                            if (alertBox) {
-                                alertBox.classList.remove('show');
-                                alertBox.classList.add('fade');
-                                alertBox.style.opacity = '0';
-                                setTimeout(() => alertBox.remove(), 500);
-                            }
-                        }, 5000);
-                    </script>
                 @endif
 
                 <div class="table-responsive">
@@ -85,9 +74,14 @@
                                     <td>{{ $product->nama_barang }}</td>
                                     <td>{{ $product->description ?? '-' }}</td>
                                     <td>{{ $product->nup_ruangan ?? '-' }}</td>
-                                    <td>{{ optional($product->tanggal_mulai)->timezone('Asia/Jakarta')->format('d M Y H:i') }}</td>
-                                    <td>{{ optional($product->tanggal_selesai)->timezone('Asia/Jakarta')->format('d M Y H:i') ?? '-' }}</td>
-                                    <td>{{ $product->stok_barang ?? '-' }}</td>
+                                    <td>
+                                        {{-- Penanganan Tanggal yang Aman --}}
+                                        {{ $product->tanggal_mulai ? $product->tanggal_mulai->format('d M Y') : '-' }}
+                                    </td>
+                                    <td>
+                                        {{ $product->tanggal_selesai ? $product->tanggal_selesai->format('d M Y') : '-' }}
+                                    </td>
+                                    <td>{{ $product->stok_barang ?? 0 }}</td>
                                     <td>{{ $product->category->nama_barang ?? '-' }}</td>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group">
@@ -96,6 +90,26 @@
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <form action="{{ route('admin.products.destroy', $product->id) }}" 
-                                                  method="POST" style="display:inline;">
+                                                  method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus?')">
                                                 @csrf
                                                 @method('DELETE')
+                                                <button type="submit" class="btn btn-danger" title="Hapus">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="12" class="text-center">Tidak ada data produk.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
