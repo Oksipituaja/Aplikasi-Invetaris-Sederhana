@@ -100,7 +100,7 @@
                                     
                                     {{-- DETAIL PJ --}}
                                     <td>
-                                        <small>{{ $product->nama_lengkap ?? 'Unknown' }}</small><br>
+                                        <strong>{{ $product->nama_lengkap ?? 'Unknown' }}</strong><br>
                                         <small>NIM: {{ $product->nim ?? '-' }}</small><br>
                                         <small>Prodi: {{ $product->prodi ?? '-' }}</small>
                                     </td>
