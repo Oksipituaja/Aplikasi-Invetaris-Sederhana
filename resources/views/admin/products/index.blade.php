@@ -49,19 +49,19 @@
                 @endif
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-sm align-middle">
+                    {{-- Tambahkan align-middle di sini untuk meratakan semua konten vertikal --}}
+                    <table class="table table-bordered table-striped table-sm align-middle"> 
                         <thead class="bg-dark">
                             <tr>
                                 <th>No</th>
                                 <th>Barang</th>
                                 <th>Kategori</th>
                                 <th class="text-center">Stok</th>
-                                {{-- KOLOM HANYA FOTO --}}
                                 <th class="text-center" style="width: 70px;">Foto PJ</th> 
                                 <th>Penanggung Jawab (Detail)</th>
                                 <th>NUP/Ruangan</th>
                                 <th>Periode</th>
-                                <th style="width: 100px;">Aksi</th>
+                                <th class="text-center" style="width: 100px;">Aksi</th> {{-- Ratakan judul Aksi --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -82,14 +82,14 @@
                                         @endif
                                     </td>
                                     
-                                    {{-- REVISI KOLOM: FOTO DENGAN DATA ATTRIBUTE BARU --}}
+                                    {{-- KOLOM FOTO --}}
                                     <td class="text-center">
                                         @if ($product->photo_path)
-                                            <a href="{{ Storage::url($product->photo_path) }}" 
-                                               {{-- HAPUS data-toggle dan data-target agar JS manual yang mengontrol --}}
+                                            {{-- MEMPERTAHANKAN LOGIKA MODAL --}}
+                                            <a href="#" 
                                                data-photo-url="{{ Storage::url($product->photo_path) }}"
                                                data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}"
-                                               class="photo-trigger"> {{-- Tambahkan class untuk target JS --}}
+                                               class="photo-trigger">
                                                 <img src="{{ Storage::url($product->photo_path) }}" alt="Foto PJ" 
                                                      class="img-circle" style="width: 35px; height: 35px; object-fit: cover; border: 1px solid #ddd;">
                                             </a>
@@ -100,7 +100,7 @@
                                     
                                     {{-- DETAIL PJ --}}
                                     <td>
-                                        <small>Nama: {{ $product->nama_lengkap ?? 'Unknown' }}</small><br>
+                                        <strong>{{ $product->nama_lengkap ?? 'Unknown' }}</strong><br> {{-- Nama dipertebal --}}
                                         <small>NIM: {{ $product->nim ?? '-' }}</small><br>
                                         <small>Prodi: {{ $product->prodi ?? '-' }}</small>
                                     </td>
@@ -110,18 +110,22 @@
                                         <small>Mulai: {{ $product->tanggal_mulai ? \Carbon\Carbon::parse($product->tanggal_mulai)->format('d/m/Y') : '-' }}</small><br>
                                         <small>Selesai: {{ $product->tanggal_selesai ? \Carbon\Carbon::parse($product->tanggal_selesai)->format('d/m/Y') : 'Tidak Ditentukan' }}</small>
                                     </td>
-                                    <td>
+                                    
+                                    {{-- KOLOM AKSI (DIRAPIKAN) --}}
+                                    <td class="text-center"> {{-- Ratakan ke Tengah --}}
                                         <div class="btn-group btn-group-sm" role="group">
                                             <a href="{{ route('admin.products.edit', $product->id) }}" 
                                                class="btn btn-warning btn-sm text-white" title="Edit">
-                                                <i class="fas fa-edit"></i>
+                                                {{-- Tambahkan fa-fw agar ikon sama lebar --}}
+                                                <i class="fas fa-edit fa-fw"></i> 
                                             </a>
                                             <form action="{{ route('admin.products.destroy', $product->id) }}" 
                                                   method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus produk {{ $product->nama_barang }}?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
-                                                    <i class="fas fa-trash"></i>
+                                                    {{-- Tambahkan fa-fw agar ikon sama lebar --}}
+                                                    <i class="fas fa-trash fa-fw"></i>
                                                 </button>
                                             </form>
                                         </div>
@@ -137,9 +141,6 @@
                         </tbody>
                     </table>
                 </div>
-                {{-- <div class="mt-3">
-                    {{ $products->links() }}
-                </div> --}}
             </div>
         </div>
     </div>
@@ -147,7 +148,7 @@
 @endsection
 
 
-{{-- MODAL UNTUK MENAMPILKAN FOTO --}}
+{{-- MODAL UNTUK MENAMPILKAN FOTO (Pertahankan jika ingin fitur modal tetap ada) --}}
 <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -168,25 +169,18 @@
 </div>
 
 @section('scripts')
-{{-- REVISI: Script untuk memuat URL gambar ke dalam modal menggunakan event click --}}
+{{-- Script Modal --}}
 <script>
     $(document).ready(function() {
-        // Targetkan link foto yang memiliki class photo-trigger
         $('.photo-trigger').on('click', function(e) {
-            e.preventDefault(); // Mencegah link pindah halaman
+            e.preventDefault(); 
             
-            var photoUrl = $(this).data('photo-url'); // Ambil data URL foto
-            var photoName = $(this).data('photo-name'); // Ambil nama PJ
-            
+            var photoUrl = $(this).data('photo-url'); 
+            var photoName = $(this).data('photo-name'); 
             var modal = $('#photoModal');
             
-            // 1. Update Title Modal
             modal.find('.modal-title').text('Foto: ' + (photoName || 'Penanggung Jawab'));
-            
-            // 2. Update Sumber Gambar di Modal
             modal.find('#modalPhoto').attr('src', photoUrl);
-            
-            // 3. Tampilkan Modal secara manual
             modal.modal('show');
         });
     });
