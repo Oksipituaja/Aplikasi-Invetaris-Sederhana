@@ -82,14 +82,14 @@
                                         @endif
                                     </td>
                                     
-                                    {{-- REVISI KOLOM: HANYA FOTO (BISA DIKLIK) --}}
+                                    {{-- REVISI KOLOM: FOTO DENGAN DATA ATTRIBUTE BARU --}}
                                     <td class="text-center">
                                         @if ($product->photo_path)
                                             <a href="#" 
-                                               data-toggle="modal" 
-                                               data-target="#photoModal" 
+                                               {{-- HAPUS data-toggle dan data-target agar JS manual yang mengontrol --}}
                                                data-photo-url="{{ Storage::url($product->photo_path) }}"
-                                               data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}">
+                                               data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}"
+                                               class="photo-trigger"> {{-- Tambahkan class untuk target JS --}}
                                                 <img src="{{ Storage::url($product->photo_path) }}" alt="Foto PJ" 
                                                      class="img-circle" style="width: 35px; height: 35px; object-fit: cover; border: 1px solid #ddd;">
                                             </a>
@@ -98,9 +98,9 @@
                                         @endif
                                     </td>
                                     
-                                    {{-- REVISI KOLOM: DETAIL PJ (TERMASUK NAMA LENGKAP) --}}
+                                    {{-- DETAIL PJ --}}
                                     <td>
-                                        <strong>{{ $product->nama_lengkap ?? 'Unknown' }}</strong><br>
+                                        <small>{{ $product->nama_lengkap ?? 'Unknown' }}</small><br>
                                         <small>NIM: {{ $product->nim ?? '-' }}</small><br>
                                         <small>Prodi: {{ $product->prodi ?? '-' }}</small>
                                     </td>
@@ -168,17 +168,26 @@
 </div>
 
 @section('scripts')
-{{-- Script untuk memuat URL gambar ke dalam modal saat dibuka --}}
+{{-- REVISI: Script untuk memuat URL gambar ke dalam modal menggunakan event click --}}
 <script>
     $(document).ready(function() {
-        $('#photoModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Tombol <a> yang memicu modal
-            var photoUrl = button.data('photo-url'); // Ambil data URL foto
-            var photoName = button.data('photo-name'); // Ambil nama PJ
-
-            var modal = $(this);
+        // Targetkan link foto yang memiliki class photo-trigger
+        $('.photo-trigger').on('click', function(e) {
+            e.preventDefault(); // Mencegah link pindah halaman
+            
+            var photoUrl = $(this).data('photo-url'); // Ambil data URL foto
+            var photoName = $(this).data('photo-name'); // Ambil nama PJ
+            
+            var modal = $('#photoModal');
+            
+            // 1. Update Title Modal
             modal.find('.modal-title').text('Foto: ' + (photoName || 'Penanggung Jawab'));
+            
+            // 2. Update Sumber Gambar di Modal
             modal.find('#modalPhoto').attr('src', photoUrl);
+            
+            // 3. Tampilkan Modal secara manual
+            modal.modal('show');
         });
     });
 </script>
