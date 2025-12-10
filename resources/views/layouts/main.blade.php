@@ -53,7 +53,7 @@
   <!-- Footer -->
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
-      <b>Version</b> Tester
+      <b>Version</b> Oksipituaja
     </div>
     <strong>Copyright &copy; 2025 <a href="#">Admin Cihuy</a>.</strong> All rights reserved.
   </footer>
