@@ -3,10 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-// Hapus atau komen-kan USE statement yang baru ditambahkan
-// use Illuminate\Support\Facades\URL; 
-// use Illuminate\Support\Facades\App; 
-// use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,10 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // HAPUS SEMUA KODE BARU DI SINI, KECUALI JIKA ANDA MEMILIKI KODE LAIN
-        // Misalnya, hanya biarkan ini:
-        // if ($this->app->environment('production')) {
-        //     URL::forceScheme('https');
-        // }
+    if ($this->app->environment('production')) {
+             URL::forceScheme('https');
+        }
     }
 }
