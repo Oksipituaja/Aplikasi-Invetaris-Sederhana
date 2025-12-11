@@ -50,7 +50,7 @@ class ProductController extends Controller
     }
 
     // =========================================================
-    // BARU: METHOD EXPORT CSV (DENGAN PERBAIKAN NULL SAFETY & HEADER)
+    // BARU: METHOD EXPORT CSV (MENGGUNAKAN DISK SEMENTARA - SOLUSI HOSTING)
     // =========================================================
     public function exportCsv(Request $request)
     {
@@ -63,63 +63,63 @@ class ProductController extends Controller
 
         $products = $productsQuery->latest()->get();
 
-        // 2. Buat Header CSV
+        // 2. Tentukan Path File Sementara di Storage
         $filename = 'inventaris_admin_' . date('Ymd_His') . '.csv';
-        
-        $headers = [
-            'Content-Type' => 'text/csv; charset=UTF-8', // Perbaikan Header
-            'Content-Disposition' => "attachment; filename=\"$filename\"",
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ];
+        $tempPath = 'exports/' . $filename;
+        // Gunakan path lengkap ke folder storage/app/exports
+        $fullPath = storage_path('app/' . $tempPath); 
 
         $columns = [
             'No', 'Nama Barang', 'Kategori', 'Stok', 'Penanggung Jawab', 'NIM', 'Prodi', 
             'No. HP', 'NUP/Ruangan', 'Tanggal Mulai', 'Tanggal Selesai', 'Deskripsi'
         ];
         
-        // Byte Order Mark (BOM) untuk memastikan Excel membaca UTF-8 dengan benar
+        // Byte Order Mark (BOM) untuk UTF-8
         $BOM = chr(0xEF) . chr(0xBB) . chr(0xBF);
 
-        // 3. Proses Streaming Data
-        $callback = function() use ($products, $columns, $BOM) {
-            // Menggunakan 'w' untuk write mode
-            $file = fopen('php://output', 'w');
-            
-            // Tulis BOM di awal file
-            fwrite($file, $BOM);
-            
-            // Tulis Header Kolom
-            fputcsv($file, $columns, ';'); 
-            
-            $i = 1;
-            foreach ($products as $product) {
-                // PENANGANAN NULL SAFETY GANDA (User dan Category)
-                $pj_name = $product->nama_lengkap ?? ($product->user ? $product->user->name : '-');
-                $category_name = $product->category ? $product->category->nama_kategori : '-'; // <-- PERBAIKAN NULL SAFETY CATEGORY
-                
-                $row = [
-                    $i++,
-                    $product->nama_barang,
-                    $category_name, 
-                    $product->stok_barang,
-                    $pj_name, 
-                    $product->nim ?? '-',
-                    $product->prodi ?? '-',
-                    $product->phone_number ?? '-',
-                    $product->nup_ruangan ?? '-',
-                    $product->tanggal_mulai ? Carbon::parse($product->tanggal_mulai)->format('Y-m-d') : '-',
-                    $product->tanggal_selesai ? Carbon::parse($product->tanggal_selesai)->format('Y-m-d') : '-',
-                    strip_tags($product->description)
-                ];
-                
-                fputcsv($file, $row, ';'); 
-            }
-            fclose($file);
-        };
+        // 3. Tulis Data ke File Sementara
+        $file = fopen($fullPath, 'w'); 
+        
+        if ($file === false) {
+             // Jika fopen gagal (misalnya, masalah permission folder storage/app/exports)
+             // Dalam produksi, ini akan membantu debug jika folder tidak bisa ditulis.
+             return back()->with('error', 'Gagal membuat file export. Cek permission folder storage/app/exports.');
+        }
 
-        return Response::stream($callback, 200, $headers);
+        // Tulis BOM dan Header
+        fwrite($file, $BOM);
+        fputcsv($file, $columns, ';'); 
+        
+        $i = 1;
+        foreach ($products as $product) {
+            // PENANGANAN NULL SAFETY GANDA (User dan Category)
+            $pj_name = $product->nama_lengkap ?? ($product->user ? $product->user->name : '-');
+            $category_name = $product->category ? $product->category->nama_kategori : '-'; 
+            
+            $row = [
+                $i++,
+                $product->nama_barang,
+                $category_name, 
+                $product->stok_barang,
+                $pj_name, 
+                $product->nim ?? '-',
+                $product->prodi ?? '-',
+                $product->phone_number ?? '-',
+                $product->nup_ruangan ?? '-',
+                $product->tanggal_mulai ? Carbon::parse($product->tanggal_mulai)->format('Y-m-d') : '-',
+                $product->tanggal_selesai ? Carbon::parse($product->tanggal_selesai)->format('Y-m-d') : '-',
+                strip_tags($product->description)
+            ];
+            
+            fputcsv($file, $row, ';'); 
+        }
+        fclose($file);
+
+        // 4. Unduh File, lalu Hapus File Sementara
+        // Menggunakan response()->download() dan menghapus file setelah selesai
+        return response()->download($fullPath, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ])->deleteFileAfterSend(true); 
     }
     // =========================================================
     // END: METHOD EXPORT CSV
