@@ -85,7 +85,6 @@
                                     {{-- KOLOM FOTO --}}
                                     <td class="text-center">
                                         @if ($product->photo_path)
-                                            {{-- MEMPERTAHANKAN LOGIKA MODAL --}}
                                             <a href="{{ Storage::url($product->photo_path) }}" 
                                                data-photo-url="{{ Storage::url($product->photo_path) }}"
                                                data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}"
@@ -100,9 +99,10 @@
                                     
                                     {{-- DETAIL PJ --}}
                                     <td>
-                                        <strong>{{ $product->nama_lengkap ?? 'Unknown' }}</strong><br> {{-- Nama dipertebal --}}
+                                        <small>{{ $product->nama_lengkap ?? 'Unknown' }}</small><br> 
                                         <small>NIM: {{ $product->nim ?? '-' }}</small><br>
                                         <small>Prodi: {{ $product->prodi ?? '-' }}</small>
+                                        <small>No.HP: {{ $product->phone_number ?? '-' }}</small>
                                     </td>
                                     
                                     <td>{{ $product->nup_ruangan ?? '-' }}</td>
