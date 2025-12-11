@@ -50,7 +50,7 @@ class ProductController extends Controller
     }
 
     // =========================================================
-    // PERBAIKAN AKHIR: METHOD EXPORT CSV (MENGATASI FIELD KATEGORI KOSONG)
+    // FINAL: METHOD EXPORT CSV (MENGGUNAKAN DISK SEMENTARA & KOREKSI NAMA KOLOM)
     // =========================================================
     public function exportCsv(Request $request)
     {
@@ -66,7 +66,6 @@ class ProductController extends Controller
         // 2. Tentukan Path File Sementara di Storage
         $filename = 'inventaris_admin_' . date('Ymd_His') . '.csv';
         $tempPath = 'exports/' . $filename;
-        // Gunakan path lengkap ke folder storage/app/exports
         $fullPath = storage_path('app/' . $tempPath); 
 
         $columns = [
@@ -80,7 +79,6 @@ class ProductController extends Controller
         // 3. Tulis Data ke File Sementara
         $file = fopen($fullPath, 'w'); 
         
-        // Cek jika gagal membuka/membuat file (kemungkinan besar karena permission)
         if ($file === false) {
              return back()->with('error', 'Gagal membuat file export. Cek izin tulis (permission) pada folder storage/app/exports.');
         }
@@ -92,27 +90,17 @@ class ProductController extends Controller
         $i = 1;
         foreach ($products as $product) {
             
-            // --- LOGIKA PENGAMBILAN NAMA KATEGORI BARU & LEBIH KUAT ---
-            $category_name = '-';
-            if ($product->category) {
-                // Prioritas 1: Coba ambil dari properti nama_kategori (sesuai kode Anda sebelumnya)
-                $category_name = $product->category->nama_kategori ?? null;
-
-                // Jika nama_kategori null/kosong, coba properti 'name' (yang paling umum di Laravel)
-                if (is_null($category_name)) {
-                     $category_name = $product->category->name ?? '-';
-                }
-            } else {
-                $category_name = '-';
-            }
-            // -----------------------------------------------------------
-            
+            // --- KOREKSI KRITIS DI SINI ---
+            // Mengganti nama properti yang diakses dari 'nama_kategori' menjadi 'nama_barang'
+            // sesuai dengan nama kolom di file migrasi categories
             $pj_name = $product->nama_lengkap ?? ($product->user ? $product->user->name : '-');
+            $category_name = $product->category ? $product->category->nama_barang : '-'; 
+            // -------------------------------
             
             $row = [
                 $i++,
                 $product->nama_barang,
-                $category_name, // Menggunakan variabel yang sudah diolah
+                $category_name, 
                 $product->stok_barang,
                 $pj_name, 
                 $product->nim ?? '-',
