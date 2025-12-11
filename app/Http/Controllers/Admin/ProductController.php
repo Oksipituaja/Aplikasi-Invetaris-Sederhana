@@ -50,7 +50,7 @@ class ProductController extends Controller
     }
 
     // =========================================================
-    // BARU: METHOD EXPORT CSV (MENGGUNAKAN DISK SEMENTARA - SOLUSI HOSTING)
+    // PERBAIKAN AKHIR: METHOD EXPORT CSV (MENGATASI FIELD KATEGORI KOSONG)
     // =========================================================
     public function exportCsv(Request $request)
     {
@@ -91,14 +91,28 @@ class ProductController extends Controller
         
         $i = 1;
         foreach ($products as $product) {
-            // PENANGANAN NULL SAFETY GANDA (User dan Category)
+            
+            // --- LOGIKA PENGAMBILAN NAMA KATEGORI BARU & LEBIH KUAT ---
+            $category_name = '-';
+            if ($product->category) {
+                // Prioritas 1: Coba ambil dari properti nama_kategori (sesuai kode Anda sebelumnya)
+                $category_name = $product->category->nama_kategori ?? null;
+
+                // Jika nama_kategori null/kosong, coba properti 'name' (yang paling umum di Laravel)
+                if (is_null($category_name)) {
+                     $category_name = $product->category->name ?? '-';
+                }
+            } else {
+                $category_name = '-';
+            }
+            // -----------------------------------------------------------
+            
             $pj_name = $product->nama_lengkap ?? ($product->user ? $product->user->name : '-');
-            $category_name = $product->category ? $product->category->nama_kategori : '-'; 
             
             $row = [
                 $i++,
                 $product->nama_barang,
-                $category_name, 
+                $category_name, // Menggunakan variabel yang sudah diolah
                 $product->stok_barang,
                 $pj_name, 
                 $product->nim ?? '-',
@@ -115,7 +129,6 @@ class ProductController extends Controller
         fclose($file);
 
         // 4. Unduh File, lalu Hapus File Sementara
-        // Menggunakan response()->download() dan menghapus file setelah selesai
         return response()->download($fullPath, $filename, [
             'Content-Type' => 'text/csv; charset=UTF-8',
         ])->deleteFileAfterSend(true); 
