@@ -14,14 +14,51 @@
     </div>
 @endsection
 
+{{-- STYLE BARU KHUSUS CETAK --}}
+@section('styles')
+<style>
+    @media print {
+        /* Sembunyikan header, sidebar, footer, dan tombol saat mencetak */
+        .main-header, .main-sidebar, .main-footer, .card-header, .breadcrumb, .print-hide {
+            display: none !important;
+        }
+        /* Tampilkan konten dengan margin minimal */
+        .content-wrapper {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        /* Pastikan tabel terlihat baik */
+        table {
+            width: 100%;
+        }
+        /* Sembunyikan kolom Aksi saat dicetak */
+        .hide-on-print {
+            display: none !important;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-12">
         <div class="card card-outline card-primary">
-            <div class="card-header">
-                 <a href="{{ route('admin.products.create') }}" class="btn btn-success">
+            <div class="card-header print-hide"> {{-- Tambahkan class print-hide --}}
+                {{-- TOMBOL TAMBAH --}}
+                <a href="{{ route('admin.products.create') }}" class="btn btn-success me-2">
                     <i class="fas fa-plus"></i> Tambah Produk
                 </a>
+
+                {{-- TOMBOL BARU: EXPORT CSV --}}
+                <a href="{{ route('admin.products.export.csv', ['category_id' => request('category_id')]) }}" class="btn btn-info me-2" title="Ekspor data yang difilter ke CSV">
+                    <i class="fas fa-file-csv"></i> Export CSV
+                </a>
+
+                {{-- TOMBOL BARU: CETAK LANGSUNG --}}
+                <button onclick="window.print()" class="btn btn-secondary me-2" title="Cetak halaman ini">
+                    <i class="fas fa-print"></i> Cetak
+                </button>
+                
                 <div class="card-tools">
                     <form method="GET" action="{{ route('admin.products.index') }}">
                         <div class="input-group input-group-sm" style="width: 250px;">
@@ -49,7 +86,6 @@
                 @endif
 
                 <div class="table-responsive">
-                    {{-- Tambahkan align-middle di sini untuk meratakan semua konten vertikal --}}
                     <table class="table table-bordered table-striped table-sm align-middle"> 
                         <thead class="bg-dark">
                             <tr>
@@ -61,7 +97,7 @@
                                 <th>Penanggung Jawab (Detail)</th>
                                 <th>NUP/Ruangan</th>
                                 <th>Periode</th>
-                                <th class="text-center" style="width: 100px;">Aksi</th> {{-- Ratakan judul Aksi --}}
+                                <th class="text-center hide-on-print" style="width: 100px;">Aksi</th> {{-- Ratakan judul Aksi --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -86,11 +122,11 @@
                                     <td class="text-center">
                                         @if ($product->photo_path)
                                             <a href="{{ Storage::url($product->photo_path) }}" 
-                                               data-photo-url="{{ Storage::url($product->photo_path) }}"
-                                               data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}"
-                                               class="photo-trigger">
+                                                data-photo-url="{{ Storage::url($product->photo_path) }}"
+                                                data-photo-name="{{ $product->nama_lengkap ?? 'Foto Penanggung Jawab' }}"
+                                                class="photo-trigger">
                                                 <img src="{{ Storage::url($product->photo_path) }}" alt="Foto PJ" 
-                                                     class="img-circle" style="width: 35px; height: 35px; object-fit: cover; border: 1px solid #ddd;">
+                                                    class="img-circle" style="width: 35px; height: 35px; object-fit: cover; border: 1px solid #ddd;">
                                             </a>
                                         @else
                                             <i class="fas fa-user-circle fa-2x text-muted" title="Tidak Ada Foto"></i>
@@ -110,14 +146,14 @@
                                         <small>Mulai: {{ $product->tanggal_mulai ? \Carbon\Carbon::parse($product->tanggal_mulai)->format('d/m/Y') : '-' }}</small><br>
                                         <small>Selesai: {{ $product->tanggal_selesai ? \Carbon\Carbon::parse($product->tanggal_selesai)->format('d/m/Y') : 'Tidak Ditentukan' }}</small>
                                     </td>
-                                    <td text-center align-middle"> 
+                                    <td class="text-center align-middle hide-on-print"> {{-- Tambahkan class hide-on-print --}}
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('admin.products.edit', $product->id) }}" 
-                                               class="btn btn-warning text-white d-inline-flex justify-content-center align-items-center me-1" title="Edit" style="width: 35px; height: 35px; padding: 0; border-radius: 1;">> 
+                                                class="btn btn-warning text-white d-inline-flex justify-content-center align-items-center me-1" title="Edit" style="width: 35px; height: 35px; padding: 0; border-radius: 1;">
                                                 <i class="fas fa-edit fa-sm"></i> 
                                             </a>
                                             <form action="{{ route('admin.products.destroy', $product->id) }}" 
-                                                  method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus produk {{ $product->nama_barang }}?')">
+                                                    method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus produk {{ $product->nama_barang }}?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger d-inline-flex justify-content-center align-items-center" title="Hapus" style="width: 35px; height: 35px; padding: 0; border-radius: 1;">
@@ -143,8 +179,7 @@
 </div>
 @endsection
 
-
-{{-- MODAL UNTUK MENAMPILKAN FOTO (Pertahankan jika ingin fitur modal tetap ada) --}}
+{{-- MODAL DAN SCRIPT (Tetap dipertahankan untuk fungsionalitas popup foto) --}}
 <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
