@@ -80,10 +80,9 @@ class ProductController extends Controller
         // 3. Tulis Data ke File Sementara
         $file = fopen($fullPath, 'w'); 
         
+        // Cek jika gagal membuka/membuat file (kemungkinan besar karena permission)
         if ($file === false) {
-             // Jika fopen gagal (misalnya, masalah permission folder storage/app/exports)
-             // Dalam produksi, ini akan membantu debug jika folder tidak bisa ditulis.
-             return back()->with('error', 'Gagal membuat file export. Cek permission folder storage/app/exports.');
+             return back()->with('error', 'Gagal membuat file export. Cek izin tulis (permission) pada folder storage/app/exports.');
         }
 
         // Tulis BOM dan Header
