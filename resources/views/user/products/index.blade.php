@@ -29,6 +29,7 @@
                                 <th>Nama Barang</th>
                                 <th>Kategori</th>
                                 <th>Foto PJ</th>
+                                <th>Penanggung Jawab (Detail)</th>
                                 <th>NUP/Ruangan</th>
                                 <th class="text-center">Stok</th>
                                 <th>Mulai</th>
@@ -62,6 +63,12 @@
                                         @endif
                                     </td>
                                 <td>{{ $product->nup_ruangan ?? '-' }}</td>
+                                <td>
+                                    <small>{{ $product->nama_lengkap ?? 'Unknown' }}</small><br> 
+                                    <small>NIM: {{ $product->nim ?? '-' }}</small><br>
+                                    <small>Prodi: {{ $product->prodi ?? '-' }}</small>
+                                    <small>No.HP: {{ $product->phone_number ?? '-' }}</small>
+                                </td>
                                 <td class="text-center">
                                     {{ $product->stok_barang }}
                                     @if($product->stok_barang < 5)
