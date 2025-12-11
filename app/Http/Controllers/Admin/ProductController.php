@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; 
 use Carbon\Carbon;
-use Symfony\Component\HttpFoundation\Response; // WAJIB untuk Export CSV
+use Symfony\Component\HttpFoundation\Response; 
 
 class ProductController extends Controller
 {
@@ -50,12 +50,11 @@ class ProductController extends Controller
     }
 
     // =========================================================
-    // BARU: METHOD EXPORT CSV
+    // BARU: METHOD EXPORT CSV (DENGAN PERBAIKAN NULL SAFETY & HEADER)
     // =========================================================
     public function exportCsv(Request $request)
     {
-        // 1. Ambil Data (Sama seperti index, termasuk filter kategori)
-        // Load relasi 'user' dan 'category'
+        // 1. Ambil Data
         $productsQuery = Product::with('category', 'user'); 
 
         if ($request->filled('category_id')) {
@@ -66,32 +65,46 @@ class ProductController extends Controller
 
         // 2. Buat Header CSV
         $filename = 'inventaris_admin_' . date('Ymd_His') . '.csv';
+        
         $headers = [
-            'Content-Type' => 'text/csv',
+            'Content-Type' => 'text/csv; charset=UTF-8', // Perbaikan Header
             'Content-Disposition' => "attachment; filename=\"$filename\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
         ];
 
         $columns = [
             'No', 'Nama Barang', 'Kategori', 'Stok', 'Penanggung Jawab', 'NIM', 'Prodi', 
             'No. HP', 'NUP/Ruangan', 'Tanggal Mulai', 'Tanggal Selesai', 'Deskripsi'
         ];
+        
+        // Byte Order Mark (BOM) untuk memastikan Excel membaca UTF-8 dengan benar
+        $BOM = chr(0xEF) . chr(0xBB) . chr(0xBF);
 
         // 3. Proses Streaming Data
-        $callback = function() use ($products, $columns) {
+        $callback = function() use ($products, $columns, $BOM) {
+            // Menggunakan 'w' untuk write mode
             $file = fopen('php://output', 'w');
-            fputcsv($file, $columns);
+            
+            // Tulis BOM di awal file
+            fwrite($file, $BOM);
+            
+            // Tulis Header Kolom
+            fputcsv($file, $columns, ';'); 
             
             $i = 1;
             foreach ($products as $product) {
-                // PENANGANAN BUG: Pastikan objek user ada sebelum mengakses properti 'name'
+                // PENANGANAN NULL SAFETY GANDA (User dan Category)
                 $pj_name = $product->nama_lengkap ?? ($product->user ? $product->user->name : '-');
+                $category_name = $product->category ? $product->category->nama_kategori : '-'; // <-- PERBAIKAN NULL SAFETY CATEGORY
                 
                 $row = [
                     $i++,
                     $product->nama_barang,
-                    $product->category->nama_kategori ?? '-',
+                    $category_name, 
                     $product->stok_barang,
-                    $pj_name, // Menggunakan variabel pj_name yang aman
+                    $pj_name, 
                     $product->nim ?? '-',
                     $product->prodi ?? '-',
                     $product->phone_number ?? '-',
@@ -100,7 +113,7 @@ class ProductController extends Controller
                     $product->tanggal_selesai ? Carbon::parse($product->tanggal_selesai)->format('Y-m-d') : '-',
                     strip_tags($product->description)
                 ];
-                // Menggunakan separator ;
+                
                 fputcsv($file, $row, ';'); 
             }
             fclose($file);
@@ -114,7 +127,6 @@ class ProductController extends Controller
 
     public function create()
     {
-        // PENTING: Pastikan Model User sudah di-import di atas!
         $categories = Category::all();
         $users = User::where('is_active', true)->orderBy('name')->get(); 
         
