@@ -12,6 +12,20 @@
             </ol>
         </div>
     </div>
+                {{-- TOMBOL TAMBAH --}}
+                <a href="{{ route('admin.products.create') }}" class="btn btn-success me-2">
+                    <i class="fas fa-plus"></i> Tambah Produk
+                </a>
+
+                {{-- TOMBOL BARU: EXPORT CSV --}}
+                <a href="{{ route('admin.products.export.csv', ['category_id' => request('category_id')]) }}" class="btn btn-info me-2" title="Ekspor data yang difilter ke CSV">
+                    <i class="fas fa-file-csv"></i> Export CSV
+                </a>
+
+                {{-- TOMBOL BARU: CETAK LANGSUNG --}}
+                <button onclick="window.print()" class="btn btn-secondary me-2" title="Cetak halaman ini">
+                    <i class="fas fa-print"></i> Cetak
+                </button>
 @endsection
 
 {{-- STYLE BARU KHUSUS CETAK --}}
