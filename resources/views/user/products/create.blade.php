@@ -102,7 +102,7 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="nup_ruangan" class="form-label">NUP / Ruangan (Opsional)</label>
+                    <label for="nup_ruangan" class="form-label">NUP / Ruangan <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('nup_ruangan') is-invalid @enderror" id="nup_ruangan" name="nup_ruangan" value="{{ old('nup_ruangan') }}">
                     @error('nup_ruangan')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
