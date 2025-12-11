@@ -46,7 +46,12 @@ use App\Http\Controllers\Admin\UserController;
 
 Route::prefix('admin')->middleware(['auth', 'cekadmin'])->name('admin.')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // RUTE PRODUK ADMIN
     Route::resource('products', ProductController::class);
+    // Rute BARU untuk Export CSV Produk Admin
+    Route::get('products/export/csv', [ProductController::class, 'exportCsv'])->name('products.export.csv');
+    
     Route::resource('categories', CategoryController::class);
     Route::resource('users', UserController::class)->except(['show']);
 });
@@ -61,7 +66,12 @@ use App\Http\Controllers\User\UserReportsController;
 
 Route::prefix('user')->middleware(['auth', 'cekuser'])->name('user.')->group(function () {
     Route::get('home', [UserHomeController::class, 'index'])->name('home');
+    
+    // RUTE PRODUK USER
     Route::resource('products', UserProductController::class);
+    // Rute BARU untuk Export CSV Produk User
+    Route::get('products/export/csv', [UserProductController::class, 'exportCsv'])->name('products.export.csv');
+
     Route::get('barang', [UserBarangController::class, 'index'])->name('barang');
     Route::get('cek-alat', [UserReportsController::class, 'create'])->name('reports.create');
     Route::post('cek-alat', [UserReportsController::class, 'store'])->name('reports.store');
