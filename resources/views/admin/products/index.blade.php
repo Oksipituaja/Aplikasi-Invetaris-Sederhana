@@ -101,7 +101,7 @@
                                     <td>
                                         <small>{{ $product->nama_lengkap ?? 'Unknown' }}</small><br> 
                                         <small>NIM: {{ $product->nim ?? '-' }}</small><br>
-                                        <small>Prodi: {{ $product->prodi ?? '-' }}</small>
+                                        <small>Prodi: {{ $product->prodi ?? '-' }}</small><br>
                                         <small>No.HP: {{ $product->phone_number ?? '-' }}</small>
                                     </td>
                                     
