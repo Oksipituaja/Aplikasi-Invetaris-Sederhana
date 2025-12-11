@@ -1,5 +1,22 @@
 @extends('layouts.app') 
+    <div class="d-flex justify-content-between align-items-center mb-3 print-hide"> 
+        <h4><i class="fas fa-clipboard-list me-2"></i> Daftar Barang Inventaris Saya</h4>
+        <div>
+            <a href="{{ route('user.products.create') }}" class="btn btn-success me-2">
+                <i class="fas fa-plus"></i> Tambah Barang Baru
+            </a>
+            
+            {{-- TOMBOL BARU: EXPORT CSV --}}
+            <a href="{{ route('user.products.export.csv') }}" class="btn btn-info me-2" title="Ekspor data ke CSV">
+                <i class="fas fa-file-csv"></i> Export CSV
+            </a>
 
+            {{-- TOMBOL BARU: CETAK LANGSUNG --}}
+            <button onclick="window.print()" class="btn btn-secondary" title="Cetak halaman ini">
+                <i class="fas fa-print"></i> Cetak
+            </button>
+        </div>
+    </div>
 @section('title', 'Daftar Barang Saya')
 
 @section('styles')

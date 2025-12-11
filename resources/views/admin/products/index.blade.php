@@ -57,21 +57,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card card-outline card-primary">
-            <div class="card-header print-hide"> {{-- Tambahkan class print-hide --}}
-                {{-- TOMBOL TAMBAH --}}
-                <a href="{{ route('admin.products.create') }}" class="btn btn-success me-2">
-                    <i class="fas fa-plus"></i> Tambah Produk
-                </a>
-
-                {{-- TOMBOL BARU: EXPORT CSV --}}
-                <a href="{{ route('admin.products.export.csv', ['category_id' => request('category_id')]) }}" class="btn btn-info me-2" title="Ekspor data yang difilter ke CSV">
-                    <i class="fas fa-file-csv"></i> Export CSV
-                </a>
-
-                {{-- TOMBOL BARU: CETAK LANGSUNG --}}
-                <button onclick="window.print()" class="btn btn-secondary me-2" title="Cetak halaman ini">
-                    <i class="fas fa-print"></i> Cetak
-                </button>
+            <div class="card-header print-hide"> 
                 
                 <div class="card-tools">
                     <form method="GET" action="{{ route('admin.products.index') }}">
