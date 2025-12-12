@@ -49,14 +49,14 @@
                 
                 <div class="mb-3">
                     <label for="phone_number" class="form-label">Nomor HP/Telepon <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" required>
+                    < type="text" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" required>
                     @error('phone_number')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 
                 <div class="mb-0">
                     <label for="photo" class="form-label">Foto Penanggung Jawab (Opsional)</label>
                     <input class="form-control @error('photo') is-invalid @enderror" type="file" id="photo" name="photo" 
-                            accept="image/*" capture="environment"> 
+                            accept="image/*" 
                     <small class="form-text text-muted">Maksimal 2MB. Disarankan foto yang jelas.</small>
                     @error('photo')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
