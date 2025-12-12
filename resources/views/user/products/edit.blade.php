@@ -60,7 +60,7 @@
                         </div>
                     @endif
                     <input class="form-control @error('photo') is-invalid @enderror" type="file" id="photo" name="photo" 
-                           accept="image/*" capture="environment">
+                           accept="image/*">
                     <small class="form-text text-muted">Unggah foto baru untuk mengganti foto lama. Maksimal 2MB.</small>
                     @error('photo')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
